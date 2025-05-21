@@ -38,12 +38,12 @@ export default function WaitlistForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
-      <div className="flex-1 max-w-xs relative">
+    <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 w-full">
+      <div className="w-full sm:flex-1 sm:max-w-xs">
         <Input
           type="email"
           placeholder="Enter your email"
-          className="bg-black/50 border-white/20 h-12"
+          className="bg-black/50 border-white/20 h-12 w-full"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSubmitting}
@@ -52,14 +52,14 @@ export default function WaitlistForm() {
       </div>
       <Button
         type="submit"
-        className="h-12 px-8 bg-red-600 hover:bg-red-700 text-white border-none"
+        className="h-12 w-full sm:w-auto sm:px-8 bg-red-600 hover:bg-red-700 text-white border-none"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Sending..." : "Request Demo"}
         {!isSubmitting && <ChevronRight className="ml-2 h-4 w-4" />}
       </Button>
       {message && (
-        <div className={`absolute mt-14 text-sm ${message.type === "success" ? "text-green-400" : "text-red-400"}`}>
+        <div className={`absolute mt-2 sm:mt-14 text-sm ${message.type === "success" ? "text-green-400" : "text-red-400"}`}>
           {message.text}
         </div>
       )}
