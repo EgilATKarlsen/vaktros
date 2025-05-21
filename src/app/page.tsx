@@ -1,7 +1,6 @@
 import CctvBackground from "@/components/cctv-background"
 import Header from "@/components/Header"
 import HeroSection from "@/components/HeroSection"
-import TechnologySection from "@/components/TechnologySection"
 import RevolutionSection from "@/components/RevolutionSection"
 import TeamSection from "@/components/TeamSection"
 import ContactSection from "@/components/ContactSection"

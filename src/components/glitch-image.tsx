@@ -8,7 +8,7 @@ interface GlitchImageProps extends ImageProps {
   glitchIntensity?: number // 0-1
 }
 
-export default function GlitchImage({ glitchIntensity = 0.5, className, ...props }: GlitchImageProps) {
+export default function GlitchImage({ className, ...props }: GlitchImageProps) {
   const [isGlitching, setIsGlitching] = useState(false)
 
   useEffect(() => {
