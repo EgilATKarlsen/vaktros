@@ -14,7 +14,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "VAKTROS",
-  description: "AI-Powered SurveillanceFor The Modern World",
+  description: "AI-Powered Surveillance For The Modern World",
+  keywords: [
+    "AI Video Analytics",
+    "Intelligent CCTV",
+    "Real-time Threat Detection",
+    "Computer Vision Security",
+    "AI Surveillance Platform",
+    "Smart Video Monitoring",
+    "Physical Security Analytics",
+    "Automated Security Alerts",
+    "CCTV Data Collection",
+    "Security AI Solutions"
+  ],
 };
 
 export default function RootLayout({
@@ -26,6 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
         {children}
       </body>
