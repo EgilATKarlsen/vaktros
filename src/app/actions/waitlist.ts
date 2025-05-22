@@ -49,7 +49,7 @@ export async function joinWaitlist(formData: FormData): Promise<WaitlistResponse
 
     return {
       success: true,
-      message: "Thank you for joining our demo list! We'll reach out to you soon.",
+      message: "Thank you for joining our list! See you soon...",
     }
   } catch (error) {
     console.error("Error joining waitlist:", error)
