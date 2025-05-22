@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CameraIcon } from "lucide-react";
+import Image from "next/image";
 import GlitchText from "@/components/glitch-text";
 
 export default function Header() {
@@ -7,7 +7,7 @@ export default function Header() {
     <header className="border-b border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <CameraIcon className="h-6 w-6 text-red-500" />
+          <Image src="/vaktros.svg" alt="Vaktros Logo" width={24} height={24} className="text-red-500" />
           <GlitchText className="text-xl font-bold tracking-wider">VAKTROS</GlitchText>
         </Link>
         <div className="hidden md:flex items-center gap-8">
