@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { CameraIcon, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CameraIcon } from "lucide-react";
 import GlitchText from "@/components/glitch-text";
 
 export default function Header() {
@@ -22,13 +21,6 @@ export default function Header() {
             CONTACT
           </Link>
         </div>
-        <Button 
-          variant="ghost" 
-          className="md:hidden p-2 border border-zinc-800 hover:bg-zinc-900/50 hover:text-red-400 transition-colors" 
-          size="icon"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
       </div>
     </header>
   );
