@@ -1,5 +1,5 @@
 import GlitchText from "@/components/glitch-text";
-import { ShieldCheck, Eye, Zap, BarChart4, Lock, Cpu } from "lucide-react";
+import { MessageCircleWarning, Eye, Zap, BarChart4, Lock, Cpu } from "lucide-react";
 
 export default function RevolutionSection() {
   return (
@@ -16,11 +16,11 @@ export default function RevolutionSection() {
             <div className="bg-black/30 backdrop-blur-sm p-6 border border-white/10 rounded-lg">
               <div className="flex items-start gap-4 mb-4">
                 <div className="h-10 w-10 rounded-full bg-red-500/20 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="h-5 w-5 text-red-400" />
+                  <MessageCircleWarning className="h-5 w-5 text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">95% Reduction in False Alarms</h3>
-                  <p className="text-gray-400">Advanced pattern recognition algorithms filter out non-threatening movements, dramatically reducing false positives that plague traditional systems.</p>
+                  <h3 className="text-xl font-bold mb-2">Instant Alert Notifications</h3>
+                  <p className="text-gray-400">Receive real-time text, push, and email notifications for security events, ensuring critical incidents are never missed regardless of where you are.</p>
                 </div>
               </div>
             </div>

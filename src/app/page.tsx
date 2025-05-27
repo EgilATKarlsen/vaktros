@@ -5,6 +5,7 @@ import RevolutionSection from "@/components/RevolutionSection"
 import TeamSection from "@/components/TeamSection"
 import ContactSection from "@/components/ContactSection"
 import Footer from "@/components/Footer"
+import Testimonials from "@/components/testimonials"
 
 export default function LandingPage() {
   return (
@@ -18,6 +19,7 @@ export default function LandingPage() {
           <HeroSection />
           {/* <TechnologySection /> */}
           <RevolutionSection />
+          <Testimonials />
           <TeamSection />
           <ContactSection />
         </main>
