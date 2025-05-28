@@ -1,9 +1,12 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { useTheme } from "next-themes"
 
 export default function CctvBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const { theme } = useTheme()
+  const isLightMode = theme === 'light'
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -65,11 +68,12 @@ export default function CctvBackground() {
         this.glitchTimer = Math.random() * 25000 + 20000
         this.glitchDuration = 0
         this.isGlitching = false
-        this.feedType = Math.floor(Math.random() * 4)
+        // Force feed type to -1 in light mode to completely disable any feed content
+        this.feedType = isLightMode ? -1 : Math.floor(Math.random() * 4)
         this.frameRate = Math.random() * 2 + 2 // 2-4 fps simulation
         this.brightness = Math.random() * 0.5 + 0.5
         this.staticAmount = Math.random() * 0.3
-        this.isOffline = Math.random() > 0.95
+        this.isOffline = isLightMode ? false : Math.random() > 0.95
         this.offlineTimer = Math.random() * 20000 + 10000
         this.colorTint = {
           r: Math.random() > 0.7 ? Math.random() * 30 : 0,
@@ -83,8 +87,8 @@ export default function CctvBackground() {
         if (timestamp % Math.floor(60 / this.frameRate) !== 0 && !this.isOffline) return
 
         // Camera feed background
-        if (this.isOffline) {
-          // Static noise for offline cameras
+        if (this.isOffline && !isLightMode) {
+          // Static noise for offline cameras - only in dark mode
           ctx.fillStyle = `rgb(30, 30, 30)`
           ctx.fillRect(this.x, this.y, this.width, this.height)
           this.drawNoise(ctx, 0.8)
@@ -98,31 +102,22 @@ export default function CctvBackground() {
           }
         } else {
           // Active camera feed
-          const baseColor = Math.floor(Math.random() * 40) * this.brightness
-          ctx.fillStyle = `rgb(
-            ${baseColor + this.colorTint.r}, 
-            ${baseColor + this.colorTint.g}, 
-            ${baseColor + this.colorTint.b}
-          )`
+          const baseColor = isLightMode ? 240 : Math.floor(Math.random() * 40) * this.brightness
+          ctx.fillStyle = `rgb(${baseColor}, ${baseColor}, ${baseColor})`
           ctx.fillRect(this.x, this.y, this.width, this.height)
 
-          // Add content based on feed type
-          this.drawFeedContent(ctx)
-
-          // Add noise
-          this.drawNoise(ctx, this.staticAmount)
-
-          // Add scan line(s)
-          this.drawScanLines(ctx)
-
-          // Add glitch effect
-          if (this.isGlitching || globalGlitchActive) {
-            this.drawGlitch(ctx)
+          // Only draw effects in dark mode
+          if (!isLightMode) {
+            this.drawFeedContent(ctx)
+            this.drawNoise(ctx, this.staticAmount)
+            this.drawScanLines(ctx)
+            if (this.isGlitching || globalGlitchActive) {
+              this.drawGlitch(ctx)
+            }
           }
 
-          // Add timestamp or camera ID occasionally
-          if (Math.random() > 0.98) {
-            // Less frequent (was 0.95)
+          // Add timestamp or camera ID occasionally - dark mode only
+          if (Math.random() > 0.98 && !isLightMode) {
             ctx.fillStyle = "rgba(255, 255, 255, 0.7)"
             ctx.font = "8px monospace"
             ctx.textAlign = "start"
@@ -135,28 +130,31 @@ export default function CctvBackground() {
           }
         }
 
-        // Camera border - thicker for glitching cameras
-        ctx.strokeStyle = this.isGlitching ? "rgba(255, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.5)"
-        ctx.lineWidth = this.isGlitching ? 2 : 1
+        // Camera border - thicker for glitching cameras, but only in dark mode
+        ctx.strokeStyle = (this.isGlitching && !isLightMode) ? "rgba(255, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.5)"
+        ctx.lineWidth = (this.isGlitching && !isLightMode) ? 2 : 1
         ctx.strokeRect(this.x, this.y, this.width, this.height)
 
-        // Update camera state
-        this.updateState()
+        // Update camera state only in dark mode
+        if (!isLightMode) {
+          this.updateState()
+        }
       }
 
       drawFeedContent(ctx: CanvasRenderingContext2D) {
-        // Different types of camera feed content
+        // Skip all feed content in light mode or if feedType is -1
+        if (isLightMode || this.feedType === -1) return;
+
         switch (this.feedType) {
           case 0: // Empty room/hallway with occasional movement
             if (Math.random() > 0.98) {
-              // Less frequent movement (was 0.95)
               ctx.fillStyle = "rgba(255, 255, 255, 0.1)"
               const size = Math.random() * 10 + 5
               const x = this.x + Math.random() * (this.width - size)
               const y = this.y + Math.random() * (this.height - size)
               ctx.fillRect(x, y, size, size)
             }
-            break
+            break;
           case 1: // Parking lot/street with occasional car movement
             if (Math.random() > 0.95) {
               // Less frequent (was 0.9)
@@ -238,61 +236,56 @@ export default function CctvBackground() {
       }
 
       drawGlitch(ctx: CanvasRenderingContext2D) {
+        // Double check we're not in light mode
+        if (isLightMode) return;
+
         // Horizontal glitch lines with more randomness
-        const numGlitchLines = Math.floor(Math.random() * 6) + 1 // Fewer lines (was 8+1)
+        const numGlitchLines = Math.floor(Math.random() * 6) + 1
         for (let i = 0; i < numGlitchLines; i++) {
           const y = this.y + Math.floor(Math.random() * this.height)
           const height = Math.floor(Math.random() * 5) + 1
           const offset = Math.floor(Math.random() * 20) - 10
 
-          // Get image data for the glitch line
-          const imageData = ctx.getImageData(this.x, y, this.width, height)
-
-          // Clear the original area
-          ctx.clearRect(this.x, y, this.width, height)
-
-          // Draw the image data with offset
-          ctx.putImageData(imageData, this.x + offset, y)
+          try {
+            // Get image data for the glitch line
+            const imageData = ctx.getImageData(this.x, y, this.width, height)
+            // Clear the original area
+            ctx.clearRect(this.x, y, this.width, height)
+            // Draw the image data with offset
+            ctx.putImageData(imageData, this.x + offset, y)
+          } catch (e) {
+            console.error("Error in camera glitch effect:", e)
+          }
         }
 
         // Vertical glitch lines occasionally
         if (Math.random() > 0.8) {
-          // Less frequent (was 0.7)
-          const numVertGlitches = Math.floor(Math.random() * 2) + 1 // Fewer (was 3+1)
+          const numVertGlitches = Math.floor(Math.random() * 2) + 1
           for (let i = 0; i < numVertGlitches; i++) {
             const x = this.x + Math.floor(Math.random() * this.width)
             const width = Math.floor(Math.random() * 5) + 1
             const offset = Math.floor(Math.random() * 10) - 5
 
-            const imageData = ctx.getImageData(x, this.y, width, this.height)
-            ctx.clearRect(x, this.y, width, this.height)
-            ctx.putImageData(imageData, x, this.y + offset)
+            try {
+              const imageData = ctx.getImageData(x, this.y, width, this.height)
+              ctx.clearRect(x, this.y, width, this.height)
+              ctx.putImageData(imageData, x, this.y + offset)
+            } catch (e) {
+              console.error("Error in vertical glitch effect:", e)
+            }
           }
         }
 
         // Color distortion with more variation
         if (Math.random() > 0.6) {
-          // Less frequent (was 0.5)
           const colorChoice = Math.floor(Math.random() * 3)
-          let color = "rgba(255, 0, 0, 0.1)" // Red by default
+          let color = "rgba(255, 0, 0, 0.1)"
 
-          if (colorChoice === 1)
-            color = "rgba(0, 255, 0, 0.1)" // Green
-          else if (colorChoice === 2) color = "rgba(0, 0, 255, 0.1)" // Blue
+          if (colorChoice === 1) color = "rgba(0, 255, 0, 0.1)"
+          else if (colorChoice === 2) color = "rgba(0, 0, 255, 0.1)"
 
           ctx.fillStyle = color
           ctx.fillRect(this.x, this.y, this.width, this.height)
-        }
-
-        // Extreme glitch - shift entire image occasionally
-        if (Math.random() > 0.95) {
-          // Less frequent (was 0.9)
-          const shiftX = Math.floor(Math.random() * 10) - 5
-          const shiftY = Math.floor(Math.random() * 6) - 3
-
-          const imageData = ctx.getImageData(this.x, this.y, this.width, this.height)
-          ctx.clearRect(this.x, this.y, this.width, this.height)
-          ctx.putImageData(imageData, this.x + shiftX, this.y + shiftY)
         }
       }
 
@@ -368,7 +361,19 @@ export default function CctvBackground() {
       frameCount++
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      // Update global glitch state
+      if (isLightMode) {
+        // In light mode, only draw subtle rolling scanlines
+        const scanlineOpacity = 0.02;
+        ctx.fillStyle = `rgba(0, 0, 0, ${scanlineOpacity})`;
+        for (let y = 0; y < canvas.height; y += 4) {
+          const offset = (frameCount * 0.5) % 4; // Very slow downward movement
+          ctx.fillRect(0, (y + offset) % canvas.height, canvas.width, 1);
+        }
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      // Dark mode - update glitch state and draw effects
       globalGlitchTimer -= FRAME_DURATION
       if (globalGlitchTimer <= 0) {
         if (!globalGlitchActive) {
@@ -386,14 +391,17 @@ export default function CctvBackground() {
           globalGlitchTimer = Math.random() * 40000 + 30000
         }
       }
+
       // Draw all cameras
       cameras.forEach((camera) => camera.draw(ctx, frameCount));
-      // Global VCR effect
+      
+      // VCR effect
       drawVCREffect(ctx, canvas.width, canvas.height, frameCount);
       // Major system glitch
       if (globalGlitchActive) {
         drawMajorGlitch(ctx, canvas.width, canvas.height);
       }
+
       requestAnimationFrame(animate);
     }
     requestAnimationFrame(animate);
@@ -456,8 +464,11 @@ export default function CctvBackground() {
 
     // Major system glitch effect
     const drawMajorGlitch = (ctx: CanvasRenderingContext2D, width: number, height: number) => {
+      // Skip ALL effects in light mode - no exceptions
+      if (isLightMode) return;
+
       // Screen tear effect
-      const numTears = Math.floor(Math.random() * 4) + 2 // Fewer tears (was 5+3)
+      const numTears = Math.floor(Math.random() * 4) + 2
       for (let i = 0; i < numTears; i++) {
         const y = Math.floor(Math.random() * height)
         const tearHeight = Math.floor(Math.random() * 20) + 5
@@ -468,7 +479,6 @@ export default function CctvBackground() {
           ctx.clearRect(0, y, width, tearHeight)
           ctx.putImageData(imageData, offset, y)
         } catch (e) {
-          // Handle potential CORS errors when getting image data
           console.error("Error in glitch effect:", e)
         }
       }
@@ -486,7 +496,7 @@ export default function CctvBackground() {
       }
 
       // Random blocks of static
-      const numBlocks = Math.floor(Math.random() * 8) + 3 // Fewer blocks (was 10+5)
+      const numBlocks = Math.floor(Math.random() * 8) + 3
       for (let i = 0; i < numBlocks; i++) {
         const blockWidth = Math.random() * 100 + 50
         const blockHeight = Math.random() * 100 + 50

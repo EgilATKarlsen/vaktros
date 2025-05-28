@@ -61,95 +61,19 @@
   }
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Add smooth scrolling to html element */
 html {
   scroll-behavior: smooth;
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   :root {
+    --radius: 0.5rem;
+    
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
 
@@ -178,17 +102,30 @@ html {
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
 
-    --radius: 0.5rem;
+    --chart-1: 171 77.2% 64.1%;
+    --chart-2: 201 75.6% 60%;
+    --chart-3: 241 65.7% 50.2%;
+    --chart-4: 93 43.7% 77.3%;
+    --chart-5: 78 59.1% 71.8%;
+
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 0 0% 3.9%;
+    --sidebar-primary: 0 0% 9%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 96.1%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 89.8%;
+    --sidebar-ring: 0 0% 3.9%;
   }
 
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 3.9%;
+    --card: 0 0% 7.8%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 7.8%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
@@ -209,12 +146,27 @@ html {
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+
+    --chart-1: 250 70% 60.8%;
+    --chart-2: 180 70% 71.8%;
+    --chart-3: 78 59.1% 71.8%;
+    --chart-4: 292 73.6% 72.2%;
+    --chart-5: 12 74.3% 64.5%;
+
+    --sidebar: 0 0% 7.8%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 250 70% 60.8%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 14.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 14.9%;
+    --sidebar-ring: 0 0% 83.1%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
@@ -405,6 +357,7 @@ html {
 }
 
 @layer utilities {
+  /* Effects that work in both light and dark mode */
   .animate-glitch-text {
     animation: glitch-text 0.2s linear infinite;
   }
@@ -417,23 +370,45 @@ html {
     animation: glitch-text-l 0.3s linear infinite;
   }
 
+  .animate-glitch-scan-line {
+    animation: glitch-scan-line 1s linear infinite;
+  }
+
+  /* Effects that only work in dark mode */
   .animate-glitch-slide {
-    animation: glitch-slide 0.2s linear forwards;
+    @apply dark:animate-[glitch-slide_0.2s_linear_forwards] motion-safe:animate-none;
   }
 
   .animate-glitch-image {
-    animation: glitch-image 0.2s linear infinite;
+    @apply dark:animate-[glitch-image_0.2s_linear_infinite] motion-safe:animate-none;
   }
 
   .animate-glitch-overlay-1 {
-    animation: glitch-overlay-1 0.2s linear infinite;
+    @apply dark:animate-[glitch-overlay-1_0.2s_linear_infinite] motion-safe:animate-none;
+    @apply motion-safe:opacity-0 dark:motion-safe:opacity-100;
   }
 
   .animate-glitch-overlay-2 {
-    animation: glitch-overlay-2 0.2s linear infinite;
+    @apply dark:animate-[glitch-overlay-2_0.2s_linear_infinite] motion-safe:animate-none;
+    @apply motion-safe:opacity-0 dark:motion-safe:opacity-100;
   }
+}
 
-  .animate-glitch-scan-line {
-    animation: glitch-scan-line 1s linear infinite;
+/* Add marquee animations for future use */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap, 1rem)));
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(-100% - var(--gap, 1rem)));
   }
 }

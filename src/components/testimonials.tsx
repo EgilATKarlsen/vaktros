@@ -97,37 +97,38 @@ const TestimonialCard = ({
     <figure
       className={cn(
         "relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border p-6",
-        "border-white/10 bg-black/40 backdrop-blur-sm hover:bg-black/60 transition-all duration-300",
-        "hover:border-red-500/30",
+        "dark:border-white/10 border-black/10 dark:bg-black/40 bg-white/40 backdrop-blur-sm",
+        "dark:hover:bg-black/60 hover:bg-white/60 transition-all duration-300",
+        "dark:hover:border-red-500/30 hover:border-orange-600/30",
       )}
     >
       <div className="flex flex-row items-center gap-3 mb-4">
         <img
-          className="rounded-full border border-white/20"
+          className="rounded-full border dark:border-white/20 border-black/20"
           width="40"
           height="40"
           alt=""
           src={img || "/placeholder.svg"}
         />
         <div className="flex flex-col">
-          <figcaption className="text-sm font-semibold text-white">{name}</figcaption>
-          <p className="text-xs text-gray-400">{business}</p>
-          <p className="text-xs text-red-400 font-medium">{type}</p>
+          <figcaption className="text-sm font-semibold text-foreground">{name}</figcaption>
+          <p className="text-xs text-muted-foreground">{business}</p>
+          <p className="text-xs text-destructive font-medium">{type}</p>
         </div>
       </div>
-      <blockquote className="text-sm text-gray-300 leading-relaxed">&quot;{body}&quot;</blockquote>
+      <blockquote className="text-sm text-muted-foreground leading-relaxed">&quot;{body}&quot;</blockquote>
     </figure>
   )
 }
 
 export default function Testimonials() {
   return (
-    <section className="py-20 border-t border-white/10 backdrop-blur-sm relative overflow-hidden">
+    <section id="testimonials" className="py-20 border-t dark:border-white/10 border-black/10 backdrop-blur-sm relative overflow-hidden">
       <div className="container mx-auto px-4 mb-12">
         <h2 className="text-3xl font-bold text-center">
           <GlitchText>Trusted by Business Owners</GlitchText>
         </h2>
-        <p className="text-gray-300 text-center mt-4 max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-center mt-4 max-w-2xl mx-auto">
           From corner stores to office complexes, see how Vaktros is helping businesses protect what matters most.
         </p>
       </div>
@@ -145,13 +146,13 @@ export default function Testimonials() {
         </Marquee>
 
         {/* Gradient overlays for fade effect */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black via-black/80 to-transparent"></div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r dark:from-black dark:via-black/80 from-white via-white/80 to-transparent"></div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l dark:from-black dark:via-black/80 from-white via-white/80 to-transparent"></div>
       </div>
 
       {/* Background effects */}
-      <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-red-500/5 blur-3xl rounded-full"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-red-500/5 blur-3xl rounded-full"></div>
+      <div className="absolute top-1/4 left-1/4 w-32 h-32 dark:bg-red-500/5 bg-orange-600/5 blur-3xl rounded-full"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-48 h-48 dark:bg-red-500/5 bg-orange-600/5 blur-3xl rounded-full"></div>
     </section>
   )
 }

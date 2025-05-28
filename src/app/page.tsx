@@ -9,7 +9,7 @@ import Testimonials from "@/components/testimonials"
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+    <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
       <div className="absolute inset-0 z-0 opacity-40">
         <CctvBackground />
       </div>

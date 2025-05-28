@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import GlitchText from "@/components/glitch-text";
-
+import { ThemeToggle } from "@/components/theme-toggle";
 export default function Header() {
   return (
     <header className="border-b border-white/10 backdrop-blur-sm">
@@ -14,6 +14,9 @@ export default function Header() {
           <Link href="#revolution" className="text-sm hover:text-red-400 transition-colors">
             PRODUCT
           </Link>
+          <Link href="#testimonials" className="text-sm hover:text-red-400 transition-colors">
+            TESTIMONIALS
+          </Link>
           <Link href="#team" className="text-sm hover:text-red-400 transition-colors">
             TEAM
           </Link>
@@ -21,6 +24,7 @@ export default function Header() {
             CONTACT
           </Link>
         </div>
+        <ThemeToggle />
       </div>
     </header>
   );

@@ -43,7 +43,7 @@ export default function WaitlistForm() {
           <Input
             type="email"
             placeholder="Enter your email"
-            className="bg-black/50 border-white/20 h-12 w-full"
+            className="h-12 w-full bg-background border-border dark:bg-secondary dark:border-secondary"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isSubmitting}
@@ -52,7 +52,7 @@ export default function WaitlistForm() {
         </div>
         <Button
           type="submit"
-          className="h-12 w-full sm:w-auto sm:px-8 bg-red-600 hover:bg-red-700 text-white border-none"
+          className="h-12 w-full sm:w-auto sm:px-8 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white border-none"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Sending..." : "Request Demo"}

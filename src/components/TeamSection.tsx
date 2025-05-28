@@ -2,7 +2,7 @@ import GlitchText from "@/components/glitch-text";
 
 export default function TeamSection() {
   return (
-    <section id="team" className="py-12 border-y border-zinc-800">
+    <section id="team" className="py-12 border-y border-border/20">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-10 text-center">
           <GlitchText>Built by Engineers from...</GlitchText>
@@ -11,8 +11,8 @@ export default function TeamSection() {
         <div className="flex flex-wrap justify-center items-center max-w-5xl mx-auto">
           {/* PayPal */}
           <div className="mx-3 mb-6">
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-zinc-700 group">
-              <svg viewBox="0 0 16 16" className="h-8 w-8 text-zinc-400 opacity-75 group-hover:opacity-100 group-hover:text-zinc-300 transition-all duration-300">
+            <div className="bg-card/90 border border-border/20 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-border/70 group">
+              <svg viewBox="0 0 16 16" className="h-8 w-8 text-muted-foreground opacity-75 group-hover:opacity-100 group-hover:text-foreground transition-all duration-300">
                 <path fill="currentColor" d="M8 1C4.143 1 1 4.12 1 8s3.121 7 7 7 7-3.121 7-7-3.143-7-7-7zm0 10.5c-1.94 0-3.5-1.56-3.5-3.5S6.06 4.5 8 4.5s3.5 1.56 3.5 3.5-1.56 3.5-3.5 3.5z"/>
               </svg>
             </div>
@@ -20,8 +20,8 @@ export default function TeamSection() {
           
           {/* Microsoft */}
           <div className="mx-3 mb-6">
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-zinc-700 group">
-              <svg viewBox="0 0 16 16" className="h-8 w-8 text-zinc-400 opacity-75 group-hover:opacity-100 group-hover:text-zinc-300 transition-all duration-300">
+            <div className="bg-card/90 border border-border/20 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-border/70 group">
+              <svg viewBox="0 0 16 16" className="h-8 w-8 text-muted-foreground opacity-75 group-hover:opacity-100 group-hover:text-foreground transition-all duration-300">
                 <path fill="currentColor" d="M1 1h6.5v6.5H1V1zM8.5 1H15v6.5H8.5V1zM1 8.5h6.5V15H1V8.5zM8.5 8.5H15V15H8.5V8.5z"/>
               </svg>
             </div>
@@ -29,8 +29,8 @@ export default function TeamSection() {
           
           {/* Twitch */}
           <div className="mx-3 mb-6">
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-zinc-700 group">
-              <svg viewBox="0 0 24 24" className="h-8 w-8 text-zinc-400 opacity-75 group-hover:opacity-100 group-hover:text-zinc-300 transition-all duration-300">
+            <div className="bg-card/90 border border-border/20 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-border/70 group">
+              <svg viewBox="0 0 24 24" className="h-8 w-8 text-muted-foreground opacity-75 group-hover:opacity-100 group-hover:text-foreground transition-all duration-300">
                 <path fill="currentColor" d="M4 3H20a1 1 0 0 1 1 1v8l-5 5H10L6 21V17H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
                 <path fill="none" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 8v4m6-4v4" className="opacity-80" />
               </svg>
@@ -39,8 +39,8 @@ export default function TeamSection() {
           
           {/* Visa */}
           <div className="mx-3 mb-6">
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-zinc-700 group">
-              <svg viewBox="0 0 230 32" className="h-6 w-20 text-zinc-400 opacity-75 group-hover:opacity-100 group-hover:text-zinc-300 transition-all duration-300">
+            <div className="bg-card/90 border border-border/20 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-border/70 group">
+              <svg viewBox="0 0 230 32" className="h-6 w-20 text-muted-foreground opacity-75 group-hover:opacity-100 group-hover:text-foreground transition-all duration-300">
                 <path fill="currentColor" d="M55.8 22c0 1.6-.3 3-1 4.2-.6 1.2-1.5 2.3-2.6 3.1-1.1.9-2.4 1.5-3.8 1.9-1.5.4-3 .6-4.6.6-2.4 0-4.5-.3-6.5-.9-1.9-.6-3.7-1.7-5.3-3.3l4.9-4.9c.8.8 1.9 1.4 3.1 1.7 1.2.3 2.5.5 3.8.5 3 0 4.4-.9 4.4-2.8 0-.8-.2-1.4-.6-1.8-.4-.4-1.1-.7-2-.8l-3.7-.5c-2.8-.4-4.8-1.3-6.2-2.8-1.4-1.5-2.1-3.6-2.1-6.3 0-1.4.2-2.7.8-4 .5-1.2 1.3-2.3 2.2-3.1 1-.9 2.2-1.6 3.5-2.1 1.4-.5 3-.7 4.7-.7 2.2 0 4.2.3 5.9.8 1.7.6 3.3 1.6 4.5 2.9l-4.8 4.8c-.4-.5-1-.8-1.6-1.1-.5-.2-1.1-.4-1.6-.5-.5-.1-1-.2-1.5-.2h-1.2c-.6 0-1.2.1-1.7.3-.4.2-.8.4-1.2.7-.3.3-.5.6-.7.9-.1.3-.2.7-.2 1 0 .2.1.5.1.7.1.3.3.5.5.7.2.2.5.4.8.6.4.2.9.3 1.3.4l3.7.5c2.7.4 4.8 1.2 6.1 2.6.8.8 1.4 1.8 1.8 2.9.6 1.4.8 2.7.8 4m7.4 9.6V.3h21v6.9H70.8v5.2h11.5v6.9H70.8v5.5h13.4v6.8h-21zm46.4 0-9.9-15.7v15.7h-7.6V.3h6.6l9.9 15.8V.3h7.6v31.3h-6.6zm28.8-24.5v24.4h-7.6V7.1h-7.6V.2H146v6.9h-7.6zm14.5 24.5V.3h7.6v31.3h-7.6zm31.9 0L179.3 20h-2.6v11.6h-7.6V.3h12.3c1.6 0 3.1.3 4.5.9 1.2.5 2.4 1.3 3.3 2.3.9.9 1.6 2 2 3.2.4 1.2.7 2.5.7 3.7 0 1-.1 2-.4 2.9-.3.8-.7 1.6-1.2 2.3-.5.7-1 1.2-1.6 1.7-.6.5-1.2.9-1.8 1.2l6.7 13.1h-8.8zm-.4-21.2c0-.8-.3-1.6-.9-2.2-.6-.6-1.4-1-2.4-1h-4.3v6.3h4.3c1 0 1.9-.3 2.4-1 .6-.5.9-1.3.9-2.1M200 31.6V.3h21v6.9h-13.4v5.2h11.5v6.9h-11.5v5.5H221v6.9l-21-.1zM22.7 3.9C19.8.2 14.9.2 14.9.2H10S5.1.2 2.2 3.9C.4 6.2 0 8.4 0 9.9V22c0 1.5.4 3.7 2.2 5.9C5 31.6 10 31.6 10 31.6h14.9v-7H11.4s-2 0-3.1-1.5c-.5-.7-.8-1.5-.9-2.4v-1.4h17.3V9.9c.1-1.5-.3-3.7-2-6M7.5 10.6c0-.9.3-1.7.9-2.4 1.2-1.5 3.1-1.5 3.1-1.5h2s2 0 3.1 1.5c.5.7.8 1.5.9 2.4v1.8h-10v-1.8zm218.3 15.7c1.5 0 2.7 1.2 2.7 2.7s-1.2 2.7-2.7 2.7c-1.5 0-2.7-1.2-2.7-2.7 0-1.5 1.2-2.7 2.7-2.7zm0 4.7c1.1 0 2.1-.9 2.1-2.1 0-1.1-.9-2.1-2.1-2.1-1.1 0-2.1.9-2.1 2.1 0 1.2.9 2.1 2.1 2.1zm-1.1-.7v-2.7h1.1c.8 0 1 .5 1 .8 0 .4-.2.7-.6.8l.7 1.1h-.6l-.7-1h-.4v1h-.5zm1-1.5c.4 0 .6-.1.6-.4 0-.3-.2-.4-.5-.4h-.5v.8h.4z" />
               </svg>
             </div>
@@ -48,8 +48,8 @@ export default function TeamSection() {
           
           {/* Western Union */}
           <div className="mx-3 mb-6">
-            <div className="bg-zinc-900/90 border border-zinc-800 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-zinc-700 group">
-              <svg viewBox="0 0 560 400" className="h-7 w-20 text-zinc-400 opacity-75 group-hover:opacity-100 group-hover:text-zinc-300 transition-all duration-300">
+            <div className="bg-card/90 border border-border/20 rounded h-20 w-32 flex items-center justify-center transition-all duration-300 hover:border-border/70 group">
+              <svg viewBox="0 0 560 400" className="h-7 w-20 text-muted-foreground opacity-75 group-hover:opacity-100 group-hover:text-foreground transition-all duration-300">
                 <g transform="matrix(.506259 0 0 .506259 -23.7552 -2.50349)">
                   <path fill="currentColor" d="m385.351 142.422h429.292.003c23.551 0 42.931 19.379 42.933 42.931v429.301c-.002 23.549-19.38 42.927-42.93 42.927-.001 0-.002 0-.003 0h-429.301c-23.546 0-42.922-19.375-42.924-42.921v-429.31c.002-23.55 19.38-42.928 42.93-42.928z"/>
                   <path fill="black" d="m814.652 142.419c23.548.007 42.922 19.385 42.924 42.934v429.297c-.002 23.548-19.376 42.926-42.924 42.931h-429.298c-.003 0-.006 0-.009 0-23.546 0-42.921-19.376-42.921-42.921 0-.003 0-.006 0-.01v-429.297c0-.003 0-.007 0-.01 0-23.547 19.377-42.924 42.924-42.924h.006zm0-9.086h-429.298c-28.525.03-51.988 23.495-52.016 52.02v429.297c.032 28.524 23.493 51.985 52.016 52.017h429.298c28.522-.034 51.98-23.495 52.01-52.017v-429.297c-.027-28.524-23.487-51.988-52.01-52.02"/>

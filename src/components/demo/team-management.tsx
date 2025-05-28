@@ -17,6 +17,8 @@ import {
   Crown,
   CheckCircle,
   XCircle,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react"
 
 interface TeamMember {
@@ -195,6 +197,8 @@ export default function TeamManagement() {
   ])
 
   const [showAddMember, setShowAddMember] = useState(false)
+  const [showRoleDefinitions, setShowRoleDefinitions] = useState(false)
+  const [expandedMembers, setExpandedMembers] = useState<Record<string, boolean>>({})
   const [newMember, setNewMember] = useState({
     name: "",
     email: "",
@@ -302,6 +306,13 @@ export default function TeamManagement() {
     setTeamMembers((members) => members.filter((member) => member.id !== memberId))
   }
 
+  const toggleMemberDetails = (memberId: string) => {
+    setExpandedMembers(prev => ({
+      ...prev,
+      [memberId]: !prev[memberId]
+    }))
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -311,7 +322,7 @@ export default function TeamManagement() {
             <Users className="h-6 w-6 text-blue-400" />
             <h3 className="text-xl font-bold">Team Management</h3>
           </div>
-          <Button onClick={() => setShowAddMember(true)} className="bg-blue-600 hover:bg-blue-700">
+          <Button onClick={() => setShowAddMember(true)} className="bg-blue-600 hover:bg-blue-700 text-white border-0">
             <UserPlus className="h-4 w-4 mr-2" />
             Add Member
           </Button>
@@ -383,10 +394,10 @@ export default function TeamManagement() {
             </div>
           </div>
           <div className="flex gap-2 mt-4">
-            <Button onClick={addMember} className="bg-green-600 hover:bg-green-700">
+            <Button onClick={addMember} className="bg-green-600 hover:bg-green-700 text-white border-0">
               Send Invitation
             </Button>
-            <Button variant="outline" onClick={() => setShowAddMember(false)}>
+            <Button variant="outline" onClick={() => setShowAddMember(false)} className="border-white/20 text-white bg-black/30">
               Cancel
             </Button>
           </div>
@@ -400,127 +411,302 @@ export default function TeamManagement() {
           {teamMembers.map((member) => {
             const roleInfo = roleDefinitions[member.role]
             const RoleIcon = roleInfo.icon
+            const showDetails = expandedMembers[member.id] || false
 
             return (
               <div
                 key={member.id}
                 className="bg-black/30 rounded-lg p-4 border border-white/10 hover:border-white/20 transition-colors"
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4">
-                    {/* Avatar */}
-                    <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
-                      <span className="text-lg font-bold">{member.name.charAt(0)}</span>
-                    </div>
-
-                    {/* Member Info */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h5 className="font-semibold">{member.name}</h5>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(member.status)}`}>
-                          {member.status}
-                        </span>
-                        {member.role === "owner" && <Crown className="h-4 w-4 text-purple-400" />}
+                {/* Mobile View (Compact) */}
+                <div className="md:hidden">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {/* Avatar */}
+                      <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                        <span className="text-md font-bold">{member.name.charAt(0)}</span>
                       </div>
-
-                      <p className="text-sm text-gray-400 mb-2">{member.email}</p>
-
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <RoleIcon className={`h-3 w-3 ${roleInfo.color}`} />
-                          <span>{roleInfo.name}</span>
+                      
+                      {/* Basic Info */}
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h5 className="font-semibold">{member.name}</h5>
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(member.status)}`}>
+                            {member.status}
+                          </span>
                         </div>
-                        <span>Joined {member.joinedAt.toLocaleDateString()}</span>
-                        <span>Last active {formatLastActive(member.lastActive)}</span>
+                        <p className="text-xs text-gray-400">{member.email}</p>
                       </div>
-
+                    </div>
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => toggleMemberDetails(member.id)}
+                      className="p-1 text-gray-400 hover:text-white hover:bg-black/50"
+                    >
+                      {showDetails ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  
+                  {/* Mobile Expanded Details */}
+                  {showDetails && (
+                    <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
+                      {/* Role & Activity */}
+                      <div className="space-y-1">
+                        <h6 className="text-xs font-medium text-gray-400">Role & Activity</h6>
+                        <div className="flex items-center gap-2">
+                          <RoleIcon className={`h-3 w-3 ${roleInfo.color}`} />
+                          <span className="text-sm">{roleInfo.name}</span>
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          <p>Joined {member.joinedAt.toLocaleDateString()}</p>
+                          <p>Last active {formatLastActive(member.lastActive)}</p>
+                        </div>
+                      </div>
+                      
                       {/* Assigned Cameras */}
-                      <div className="mt-2">
-                        <span className="text-xs text-gray-400">Cameras: </span>
+                      <div className="space-y-1">
+                        <h6 className="text-xs font-medium text-gray-400">Assigned Cameras</h6>
                         {member.assignedCameras.length === 0 ? (
-                          <span className="text-xs text-gray-500">None assigned</span>
+                          <p className="text-xs text-gray-500">None assigned</p>
                         ) : member.assignedCameras.length === availableCameras.length ? (
-                          <span className="text-xs text-blue-400">All cameras</span>
+                          <p className="text-xs text-blue-400">All cameras</p>
                         ) : (
-                          <span className="text-xs text-blue-400">
+                          <p className="text-xs text-blue-400">
                             {member.assignedCameras
                               .map((id) => availableCameras.find((cam) => cam.id === id)?.name)
                               .join(", ")}
-                          </span>
+                          </p>
                         )}
                       </div>
-
+                      
                       {/* Notification Preferences */}
-                      <div className="flex items-center gap-3 mt-2">
-                        <span className="text-xs text-gray-400">Notifications:</span>
-                        {member.notifications.push && <Bell className="h-3 w-3 text-blue-400" />}
-                        {member.notifications.email && <Mail className="h-3 w-3 text-green-400" />}
-                        {member.notifications.sms && <MessageSquare className="h-3 w-3 text-yellow-400" />}
-                        {member.notifications.call && <Phone className="h-3 w-3 text-red-400" />}
+                      <div className="space-y-1">
+                        <h6 className="text-xs font-medium text-gray-400">Notifications</h6>
+                        <div className="flex items-center gap-3">
+                          {member.notifications.push && (
+                            <div className="flex items-center gap-1">
+                              <Bell className="h-3 w-3 text-blue-400" />
+                              <span className="text-xs">Push</span>
+                            </div>
+                          )}
+                          {member.notifications.email && (
+                            <div className="flex items-center gap-1">
+                              <Mail className="h-3 w-3 text-green-400" />
+                              <span className="text-xs">Email</span>
+                            </div>
+                          )}
+                          {member.notifications.sms && (
+                            <div className="flex items-center gap-1">
+                              <MessageSquare className="h-3 w-3 text-yellow-400" />
+                              <span className="text-xs">SMS</span>
+                            </div>
+                          )}
+                          {member.notifications.call && (
+                            <div className="flex items-center gap-1">
+                              <Phone className="h-3 w-3 text-red-400" />
+                              <span className="text-xs">Call</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Actions */}
+                      <div className="pt-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {member.status === "pending" && (
+                            <>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateMemberStatus(member.id, "active")}
+                                className="text-green-400 border-green-400/30 hover:bg-green-400/20 bg-black/30"
+                              >
+                                <CheckCircle className="h-3 w-3 mr-1" />
+                                Approve
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => removeMember(member.id)}
+                                className="text-red-400 border-red-400/30 hover:bg-red-400/20 bg-black/30"
+                              >
+                                <XCircle className="h-3 w-3 mr-1" />
+                                Reject
+                              </Button>
+                            </>
+                          )}
+
+                          {member.status === "active" && member.role !== "owner" && (
+                            <>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => setShowAddMember(true)}
+                                className="border-white/20 hover:bg-black/50 text-white bg-black/30"
+                              >
+                                <Edit className="h-3 w-3 mr-1" />
+                                Edit
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateMemberStatus(member.id, "inactive")}
+                                className="text-yellow-400 border-yellow-400/30 hover:bg-yellow-400/20 bg-black/30"
+                              >
+                                Deactivate
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => removeMember(member.id)}
+                                className="text-red-400 border-red-400/30 hover:bg-red-400/20 bg-black/30"
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </>
+                          )}
+
+                          {member.status === "inactive" && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => updateMemberStatus(member.id, "active")}
+                              className="text-green-400 border-green-400/30 hover:bg-green-400/20 bg-black/30"
+                            >
+                              Reactivate
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center gap-2">
-                    {member.status === "pending" && (
-                      <>
+                {/* Desktop View (Full) */}
+                <div className="hidden md:block">
+                  <div className="flex flex-row items-start justify-between">
+                    <div className="flex items-start gap-4">
+                      {/* Avatar */}
+                      <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
+                        <span className="text-lg font-bold">{member.name.charAt(0)}</span>
+                      </div>
+
+                      {/* Member Info */}
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <h5 className="font-semibold">{member.name}</h5>
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(member.status)}`}>
+                            {member.status}
+                          </span>
+                          {member.role === "owner" && <Crown className="h-4 w-4 text-purple-400" />}
+                        </div>
+
+                        <p className="text-sm text-gray-400 mb-2">{member.email}</p>
+
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-2">
+                          <div className="flex items-center gap-1">
+                            <RoleIcon className={`h-3 w-3 ${roleInfo.color}`} />
+                            <span>{roleInfo.name}</span>
+                          </div>
+                          <span>Joined {member.joinedAt.toLocaleDateString()}</span>
+                          <span>Last active {formatLastActive(member.lastActive)}</span>
+                        </div>
+
+                        {/* Assigned Cameras */}
+                        <div className="mt-2">
+                          <span className="text-xs text-gray-400">Cameras: </span>
+                          {member.assignedCameras.length === 0 ? (
+                            <span className="text-xs text-gray-500">None assigned</span>
+                          ) : member.assignedCameras.length === availableCameras.length ? (
+                            <span className="text-xs text-blue-400">All cameras</span>
+                          ) : (
+                            <span className="text-xs text-blue-400">
+                              {member.assignedCameras
+                                .map((id) => availableCameras.find((cam) => cam.id === id)?.name)
+                                .join(", ")}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Notification Preferences */}
+                        <div className="flex items-center gap-3 mt-2">
+                          <span className="text-xs text-gray-400">Notifications:</span>
+                          {member.notifications.push && <Bell className="h-3 w-3 text-blue-400" />}
+                          {member.notifications.email && <Mail className="h-3 w-3 text-green-400" />}
+                          {member.notifications.sms && <MessageSquare className="h-3 w-3 text-yellow-400" />}
+                          {member.notifications.call && <Phone className="h-3 w-3 text-red-400" />}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      {member.status === "pending" && (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateMemberStatus(member.id, "active")}
+                            className="text-green-400 border-green-400/30 hover:bg-green-400/20 bg-black/30"
+                          >
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => removeMember(member.id)}
+                            className="text-red-400 border-red-400/30 hover:bg-red-400/20 bg-black/30"
+                          >
+                            <XCircle className="h-3 w-3 mr-1" />
+                            Reject
+                          </Button>
+                        </>
+                      )}
+
+                      {member.status === "active" && member.role !== "owner" && (
+                        <>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setShowAddMember(true)}
+                            className="border-white/20 hover:bg-black/50 text-white bg-black/30"
+                          >
+                            <Edit className="h-3 w-3 mr-1" />
+                            Edit
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => updateMemberStatus(member.id, "inactive")}
+                            className="text-yellow-400 border-yellow-400/30 hover:bg-yellow-400/20 bg-black/30"
+                          >
+                            Deactivate
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => removeMember(member.id)}
+                            className="text-red-400 border-red-400/30 hover:bg-red-400/20 bg-black/30"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </>
+                      )}
+
+                      {member.status === "inactive" && (
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => updateMemberStatus(member.id, "active")}
-                          className="text-green-400 border-green-400 hover:bg-green-400/10"
+                          className="text-green-400 border-green-400/30 hover:bg-green-400/20 bg-black/30"
                         >
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                          Approve
+                          Reactivate
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => removeMember(member.id)}
-                          className="text-red-400 border-red-400 hover:bg-red-400/10"
-                        >
-                          <XCircle className="h-3 w-3 mr-1" />
-                          Reject
-                        </Button>
-                      </>
-                    )}
-
-                    {member.status === "active" && member.role !== "owner" && (
-                      <>
-                        <Button size="sm" variant="outline" onClick={() => setShowAddMember(true)}>
-                          <Edit className="h-3 w-3 mr-1" />
-                          Edit
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => updateMemberStatus(member.id, "inactive")}
-                          className="text-yellow-400 border-yellow-400 hover:bg-yellow-400/10"
-                        >
-                          Deactivate
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => removeMember(member.id)}
-                          className="text-red-400 border-red-400 hover:bg-red-400/10"
-                        >
-                          <Trash2 className="h-3 w-3" />
-                        </Button>
-                      </>
-                    )}
-
-                    {member.status === "inactive" && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => updateMemberStatus(member.id, "active")}
-                        className="text-green-400 border-green-400 hover:bg-green-400/10"
-                      >
-                        Reactivate
-                      </Button>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -529,39 +715,54 @@ export default function TeamManagement() {
         </div>
       </div>
 
-      {/* Role Definitions */}
+      {/* Role Definitions - Collapsible */}
       <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg p-6">
-        <h4 className="text-lg font-bold mb-4">Role Permissions</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(roleDefinitions).map(([roleKey, role]) => {
-            const RoleIcon = role.icon
-            const permissions = getDefaultPermissions(roleKey as TeamMember["role"])
-
-            return (
-              <div key={roleKey} className={`p-4 rounded-lg border ${role.bgColor} ${role.borderColor}`}>
-                <div className="flex items-center gap-2 mb-2">
-                  <RoleIcon className={`h-5 w-5 ${role.color}`} />
-                  <h5 className="font-semibold">{role.name}</h5>
-                </div>
-                <p className="text-sm text-gray-400 mb-3">{role.description}</p>
-                <div className="space-y-1 text-xs">
-                  {Object.entries(permissions).map(([perm, enabled]) => (
-                    <div key={perm} className="flex items-center gap-2">
-                      {enabled ? (
-                        <CheckCircle className="h-3 w-3 text-green-400" />
-                      ) : (
-                        <XCircle className="h-3 w-3 text-red-400" />
-                      )}
-                      <span className={enabled ? "text-gray-300" : "text-gray-500"}>
-                        {perm.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
+        <div 
+          className="flex items-center justify-between cursor-pointer" 
+          onClick={() => setShowRoleDefinitions(!showRoleDefinitions)}
+        >
+          <h4 className="text-lg font-bold">Role Permissions</h4>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="text-gray-400 hover:text-white hover:bg-black/50"
+          >
+            {showRoleDefinitions ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </Button>
         </div>
+        
+        {showRoleDefinitions && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {Object.entries(roleDefinitions).map(([roleKey, role]) => {
+              const RoleIcon = role.icon
+              const permissions = getDefaultPermissions(roleKey as TeamMember["role"])
+
+              return (
+                <div key={roleKey} className={`p-4 rounded-lg border ${role.bgColor} ${role.borderColor}`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <RoleIcon className={`h-5 w-5 ${role.color}`} />
+                    <h5 className="font-semibold">{role.name}</h5>
+                  </div>
+                  <p className="text-sm text-gray-400 mb-3">{role.description}</p>
+                  <div className="space-y-1 text-xs">
+                    {Object.entries(permissions).map(([perm, enabled]) => (
+                      <div key={perm} className="flex items-center gap-2">
+                        {enabled ? (
+                          <CheckCircle className="h-3 w-3 text-green-400" />
+                        ) : (
+                          <XCircle className="h-3 w-3 text-red-400" />
+                        )}
+                        <span className={enabled ? "text-gray-300" : "text-gray-500"}>
+                          {perm.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase())}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
     </div>
   )
