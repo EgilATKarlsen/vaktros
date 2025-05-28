@@ -22,7 +22,7 @@ function VideoContainer() {
       <div className="absolute inset-1 bg-gradient-to-br from-muted/80 to-background/60 backdrop-blur-md rounded-[20px]"></div>
       <div className="relative rounded-lg overflow-hidden">
         <video
-          className="w-full object-cover min-h-[250px] md:min-h-[350px] mix-blend-lighten opacity-90"
+          className="w-full object-cover min-h-[250px] md:min-h-[350px] dark:mix-blend-lighten mix-blend-darken dark:opacity-90 opacity-80"
           autoPlay
           muted
           loop
