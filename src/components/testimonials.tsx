@@ -113,7 +113,7 @@ const TestimonialCard = ({
         <div className="flex flex-col">
           <figcaption className="text-sm font-semibold text-foreground">{name}</figcaption>
           <p className="text-xs text-muted-foreground">{business}</p>
-          <p className="text-xs text-destructive font-medium">{type}</p>
+          <p className="text-xs text-orange-600 dark:text-red-400 font-medium">{type}</p>
         </div>
       </div>
       <blockquote className="text-sm text-muted-foreground leading-relaxed">&quot;{body}&quot;</blockquote>
