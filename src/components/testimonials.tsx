@@ -81,13 +81,11 @@ const firstRow = testimonials.slice(0, testimonials.length / 2)
 const secondRow = testimonials.slice(testimonials.length / 2)
 
 const TestimonialCard = ({
-  img,
   name,
   business,
   type,
   body,
 }: {
-  img: string
   name: string
   business: string
   type: string
@@ -96,25 +94,16 @@ const TestimonialCard = ({
   return (
     <figure
       className={cn(
-        "relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border p-6",
+        "relative h-full w-80 cursor-pointer overflow-hidden rounded-xl border p-5",
         "dark:border-white/10 border-black/10 dark:bg-black/40 bg-white/40 backdrop-blur-sm",
         "dark:hover:bg-black/60 hover:bg-white/60 transition-all duration-300",
         "dark:hover:border-red-500/30 hover:border-orange-600/30",
       )}
     >
-      <div className="flex flex-row items-center gap-3 mb-4">
-        <img
-          className="rounded-full border dark:border-white/20 border-black/20"
-          width="40"
-          height="40"
-          alt=""
-          src={img || "/placeholder.svg"}
-        />
-        <div className="flex flex-col">
-          <figcaption className="text-sm font-semibold text-foreground">{name}</figcaption>
-          <p className="text-xs text-muted-foreground">{business}</p>
-          <p className="text-xs text-orange-600 dark:text-red-400 font-medium">{type}</p>
-        </div>
+      <div className="flex flex-col gap-0.5 mb-3">
+        <figcaption className="text-sm font-semibold text-foreground">{name}</figcaption>
+        <p className="text-xs text-muted-foreground">{business}</p>
+        <p className="text-xs text-orange-600 dark:text-red-400 font-medium">{type}</p>
       </div>
       <blockquote className="text-sm text-muted-foreground leading-relaxed">&quot;{body}&quot;</blockquote>
     </figure>

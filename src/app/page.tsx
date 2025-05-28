@@ -6,7 +6,7 @@ import TeamSection from "@/components/TeamSection"
 import ContactSection from "@/components/ContactSection"
 import Footer from "@/components/Footer"
 import Testimonials from "@/components/testimonials"
-
+import SecurityFeaturesSlideshow from "@/components/feature-slideshow"
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-hidden">
@@ -20,6 +20,7 @@ export default function LandingPage() {
           {/* <TechnologySection /> */}
           <RevolutionSection />
           <Testimonials />
+          {/* <SecurityFeaturesSlideshow /> */}
           <TeamSection />
           <ContactSection />
         </main>
