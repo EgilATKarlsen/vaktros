@@ -21,55 +21,90 @@ export default function CctvDemoPage() {
       description="Complete AI-powered security monitoring and management system"
     >
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-7 bg-black/40 border border-white/10">
+        <TabsList className="flex w-full justify-between lg:grid lg:grid-cols-7 gap-1 bg-black/40 border border-white/10 p-1">
           <TabsTrigger 
             value="monitoring" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Camera className="h-4 w-4" />
-            <span>Live Feeds</span>
+            <Camera className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Live Feeds</span>
           </TabsTrigger>
           <TabsTrigger 
             value="events" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Activity className="h-4 w-4" />
-            <span>Events</span>
+            <Activity className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Events</span>
           </TabsTrigger>
           <TabsTrigger 
             value="detection" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Brain className="h-4 w-4" />
-            <span>AI Rules</span>
+            <Brain className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">AI Rules</span>
           </TabsTrigger>
           <TabsTrigger 
             value="search" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Search className="h-4 w-4" />
-            <span>Search</span>
+            <Search className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Search</span>
           </TabsTrigger>
           <TabsTrigger 
             value="playback" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Play className="h-4 w-4" />
-            <span>Playback</span>
+            <Play className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Playback</span>
           </TabsTrigger>
           <TabsTrigger 
             value="settings" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Settings className="h-4 w-4" />
-            <span>Settings</span>
+            <Settings className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Settings</span>
           </TabsTrigger>
           <TabsTrigger 
             value="team" 
-            className="flex items-center gap-2 text-sm md:text-base data-[state=active]:text-black text-gray-200"
+            className="flex-shrink-0 w-10 h-10 lg:w-auto lg:h-auto flex items-center justify-center lg:justify-center gap-2 text-sm 
+              data-[state=active]:bg-white/10 data-[state=active]:border-2 data-[state=active]:border-red-500/50
+              data-[state=active]:shadow-[0_0_10px_rgba(239,68,68,0.1)] data-[state=active]:text-red-400 
+              lg:data-[state=active]:bg-white lg:data-[state=active]:text-black lg:data-[state=active]:border-red-500/20 
+              lg:data-[state=active]:shadow-[0_2px_10px_rgba(0,0,0,0.1)] lg:data-[state=active]:font-medium
+              text-gray-200 rounded-md transition-all duration-200"
           >
-            <Users className="h-4 w-4" />
-            <span>Team</span>
+            <Users className="h-4 w-4 lg:mr-2 lg:data-[state=active]:text-red-500" />
+            <span className="hidden lg:inline">Team</span>
           </TabsTrigger>
         </TabsList>
 
