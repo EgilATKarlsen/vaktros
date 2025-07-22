@@ -174,7 +174,14 @@ export function CreateTicketDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={variant} className="flex items-center gap-2">
+        <Button 
+          variant={variant} 
+          className={`flex items-center gap-2 transition-all duration-200 ${
+            variant === "default" 
+              ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:scale-105" 
+              : "border-white/10 hover:bg-white/5 hover:border-blue-500/30"
+          }`}
+        >
           <Plus className="w-4 h-4" />
           Create Ticket
         </Button>

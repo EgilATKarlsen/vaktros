@@ -15,10 +15,10 @@ import {
   AlertTriangle,
   CheckCircle,
   LifeBuoy,
-  ArrowRight
+  ArrowRight,
+  Plus
 } from "lucide-react";
 import { Ticket as TicketType } from "@/lib/db";
-import { CreateTicketDialog } from "@/components/create-ticket-dialog";
 import { useDashboardHeader } from "@/components/dashboard-header-context";
 import Link from "next/link";
 import { useUser } from "@stackframe/stack";
@@ -158,48 +158,48 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Action Bar */}
-      <div className="flex items-center justify-end">
-        <CreateTicketDialog
-          teamId={currentTeam.id}
-          userId={user?.id || ''}
-          userName={user?.displayName || 'Unknown User'}
-          userEmail={user?.primaryEmail || 'No email'}
-        />
-      </div>
-
-      {/* Team Overview */}
+    <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
+      {/* Team Overview with Action Button */}
       <Card className="border-blue-500/20 bg-blue-500/5">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Building className="h-5 w-5 text-blue-500" />
-            {currentTeam.displayName}
-          </CardTitle>
-          <CardDescription>
-            Your surveillance network team overview and status
-          </CardDescription>
+        <CardHeader className="pb-3 sm:pb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Building className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
+                {currentTeam.displayName}
+              </CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
+                Your surveillance network team overview and status
+              </CardDescription>
+            </div>
+            <Link href="/dashboard/tickets/create">
+              <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+                <Plus className="h-4 w-4" />
+                Create Ticket
+              </Button>
+            </Link>
+          </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
+        <CardContent className="px-3 sm:px-6">
+          <div className="grid gap-3 sm:gap-4 md:grid-cols-3">
             <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-blue-500" />
-              <span className="text-sm text-muted-foreground">Team Members:</span>
-              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 text-xs">
+              <Users className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-muted-foreground">Team Members:</span>
+              <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 text-xs px-2 py-0">
                 Active
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-green-500" />
-              <span className="text-sm text-muted-foreground">Security Status:</span>
-              <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs">
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-muted-foreground">Security Status:</span>
+              <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs px-2 py-0">
                 Operational
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              <Activity className="h-4 w-4 text-yellow-500" />
-              <span className="text-sm text-muted-foreground">System Status:</span>
-              <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 text-xs">
+              <Activity className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
+              <span className="text-xs sm:text-sm text-muted-foreground">System Status:</span>
+              <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-400 text-xs px-2 py-0">
                 Monitoring
               </Badge>
             </div>
@@ -208,56 +208,56 @@ export default function DashboardPage() {
       </Card>
 
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <Card className="border-blue-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Tickets</p>
-                <p className="text-2xl font-bold text-blue-400">{ticketStats.total}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total Tickets</p>
+                <p className="text-lg sm:text-2xl font-bold text-blue-400">{ticketStats.total}</p>
               </div>
-              <Ticket className="h-8 w-8 text-blue-500/60" />
+              <Ticket className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500/60" />
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-orange-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Open</p>
-                <p className="text-2xl font-bold text-orange-400">{ticketStats.open}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Open</p>
+                <p className="text-lg sm:text-2xl font-bold text-orange-400">{ticketStats.open}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-orange-500/20 flex items-center justify-center">
-                <AlertTriangle className="h-4 w-4 text-orange-500" />
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-orange-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-yellow-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">In Progress</p>
-                <p className="text-2xl font-bold text-yellow-400">{ticketStats.inProgress}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">In Progress</p>
+                <p className="text-lg sm:text-2xl font-bold text-yellow-400">{ticketStats.inProgress}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                <Clock className="h-4 w-4 text-yellow-500" />
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                <Clock className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-green-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Resolved</p>
-                <p className="text-2xl font-bold text-green-400">{ticketStats.resolved}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Resolved</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-400">{ticketStats.resolved}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
               </div>
             </div>
           </CardContent>
@@ -288,13 +288,12 @@ export default function DashboardPage() {
             <div className="text-center py-8">
               <LifeBuoy className="h-8 w-8 mx-auto text-muted-foreground mb-3" />
               <p className="text-sm text-muted-foreground mb-3">No support tickets yet</p>
-              <CreateTicketDialog
-                teamId={currentTeam.id}
-                userId={user?.id || ''}
-                userName={user?.displayName || 'Unknown User'}
-                userEmail={user?.primaryEmail || 'No email'}
-                variant="default"
-              />
+              <Link href="/dashboard/tickets/create">
+                <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
+                  <Plus className="h-4 w-4" />
+                  Create New Ticket
+                </Button>
+              </Link>
             </div>
           ) : (
             <div className="space-y-3">

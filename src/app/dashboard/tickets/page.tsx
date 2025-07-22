@@ -126,67 +126,79 @@ export default function TicketsPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <Card className="border-blue-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total</p>
-                <p className="text-2xl font-bold text-blue-400">{stats.total}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Total</p>
+                <p className="text-lg sm:text-2xl font-bold text-blue-400">{stats.total}</p>
               </div>
-              <TicketIcon className="h-8 w-8 text-blue-500/60" />
+              <TicketIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500/60" />
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-orange-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Open</p>
-                <p className="text-2xl font-bold text-orange-400">{stats.open}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Open</p>
+                <p className="text-lg sm:text-2xl font-bold text-orange-400">{stats.open}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-orange-500/20 flex items-center justify-center">
-                <div className="h-3 w-3 rounded-full bg-orange-500"></div>
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <div className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-orange-500"></div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-yellow-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">In Progress</p>
-                <p className="text-2xl font-bold text-yellow-400">{stats.inProgress}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">In Progress</p>
+                <p className="text-lg sm:text-2xl font-bold text-yellow-400">{stats.inProgress}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                <div className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-yellow-500"></div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-green-500/20">
-          <CardContent className="p-4">
+          <CardContent className="p-3 sm:p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Resolved</p>
-                <p className="text-2xl font-bold text-green-400">{stats.resolved}</p>
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">Resolved</p>
+                <p className="text-lg sm:text-2xl font-bold text-green-400">{stats.resolved}</p>
               </div>
-              <div className="h-8 w-8 rounded-full bg-green-500/20 flex items-center justify-center">
-                <div className="h-3 w-3 rounded-full bg-green-500"></div>
+              <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                <div className="h-2 w-2 sm:h-3 sm:w-3 rounded-full bg-green-500"></div>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Main Content - Split Layout */}
-      <div className={`grid gap-6 ${selectedTicket ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} transition-all duration-300`}>
-        {/* Ticket Detail Panel - Left 1/3 */}
+      {/* Mobile Detail Panel - Full Screen Overlay */}
+      {selectedTicket && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-background">
+          <div className="h-full overflow-auto">
+            <TicketDetailPanel 
+              ticket={selectedTicket} 
+              onClose={handleCloseDetail}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Main Content - Desktop Split Layout */}
+      <div className={`grid gap-4 sm:gap-6 ${selectedTicket ? 'hidden lg:grid lg:grid-cols-3' : 'grid-cols-1'} transition-all duration-300`}>
+        {/* Ticket Detail Panel - Left 1/3 - Desktop Only */}
         {selectedTicket && (
           <div className="lg:col-span-1">
             <Card className="h-[calc(100vh-300px)] border-blue-500/20">
@@ -201,40 +213,40 @@ export default function TicketsPage() {
         {/* All Tickets - Right 2/3 or Full Width */}
         <div className={selectedTicket ? "lg:col-span-2" : "lg:col-span-1"}>
           <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
+            <CardHeader className="pb-3 sm:pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
                 <div className="flex items-center gap-2">
-                  <CardTitle className="flex items-center gap-2">
-                    <TicketIcon className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                    <TicketIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                     All Tickets
                     {selectedTicket && (
-                      <span className="text-sm font-normal text-muted-foreground ml-2">
+                      <span className="text-xs sm:text-sm font-normal text-muted-foreground ml-2 hidden sm:inline">
                         (Click a ticket to view details)
                       </span>
                     )}
                   </CardTitle>
                 </div>
                 <Link href="/dashboard/tickets/create">
-                  <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-sm">
                     <Plus className="w-4 h-4 mr-2" />
-                    Create Ticket
+                    <span className="sm:inline">Create Ticket</span>
                   </Button>
                 </Link>
               </div>
-              <CardDescription>
+              <CardDescription className="text-xs sm:text-sm">
                 Complete list of support tickets for your team with search and filtering
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-3 sm:px-6">
               {tickets.length === 0 ? (
-                <div className="text-center py-12">
-                  <TicketIcon className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No Support Tickets</h3>
-                  <p className="text-muted-foreground mb-4">
+                <div className="text-center py-8 sm:py-12">
+                  <TicketIcon className="h-8 w-8 sm:h-12 sm:w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-base sm:text-lg font-semibold mb-2">No Support Tickets</h3>
+                  <p className="text-muted-foreground mb-4 text-sm sm:text-base px-4">
                     Your team hasn&apos;t submitted any support tickets yet.
                   </p>
                   <Link href="/dashboard/tickets/create">
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-sm">
                       <Plus className="w-4 h-4 mr-2" />
                       Create Your First Ticket
                     </Button>
