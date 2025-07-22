@@ -45,15 +45,16 @@ export default function HeroSection() {
         <div className="max-w-3xl md:w-1/2">
           <div className="mb-6">
             <div className="inline-block px-3 py-1 mb-4 border dark:border-red-500/30 border-orange-600/30 dark:text-red-400 text-orange-600 text-xs tracking-wider">
-              NEXT GEN SECURITY
+              NEXT GEN MSP
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              <GlitchText>AI-Powered Surveillance</GlitchText>
-              <GlitchText>For The Modern World</GlitchText>
+              <GlitchText>Physical & Digital</GlitchText>
+              <GlitchText>Security Services</GlitchText>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-              Building the next generation of AI-enabled physical security products for real-time data collection in
-              public safety and retail spaces.
+              Serving offices, manufacturing, construction, and other industries with innovative installation and 
+              continued management. We leverage network and surveillance data to improve workplace safety from 
+              regulatory, liability, and compliance perspectives.
             </p>
             <div className="relative">
               <WaitlistForm />

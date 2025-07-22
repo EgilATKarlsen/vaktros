@@ -1,8 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@stackframe/stack";
 import GlitchText from "@/components/glitch-text";
 import { ThemeToggle } from "@/components/theme-toggle";
+
 export default function Header() {
+  const user = useUser();
+
   return (
     <header className="border-b border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -24,7 +30,34 @@ export default function Header() {
             CONTACT
           </Link>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          {user ? (
+            // User is logged in - show dashboard and logout
+            <div className="flex items-center gap-4">
+              <Link 
+                href="/dashboard" 
+                className="text-sm hover:text-red-400 transition-colors"
+              >
+                DASHBOARD
+              </Link>
+              <Link 
+                href="/handler/sign-out" 
+                className="text-sm hover:text-red-400 transition-colors"
+              >
+                SIGN OUT
+              </Link>
+            </div>
+          ) : (
+            // User is not logged in - show login
+            <Link 
+              href="/handler/sign-in" 
+              className="text-sm hover:text-red-400 transition-colors"
+            >
+              SIGN IN
+            </Link>
+          )}
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
