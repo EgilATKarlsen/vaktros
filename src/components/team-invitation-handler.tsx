@@ -75,9 +75,9 @@ export function TeamInvitationHandler() {
       });
 
       setShowConfirmation(true);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("💥 Client: Error verifying invitation:", err);
-      setError(err.message || "Failed to verify invitation code");
+      setError(err instanceof Error ? err.message : "Failed to verify invitation code");
     } finally {
       setIsVerifying(false);
     }
@@ -110,9 +110,9 @@ export function TeamInvitationHandler() {
         router.push("/dashboard");
       }, 2000);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error accepting invitation:", err);
-      setError(err.message || "Failed to accept invitation");
+      setError(err instanceof Error ? err.message : "Failed to accept invitation");
     } finally {
       setIsAccepting(false);
     }

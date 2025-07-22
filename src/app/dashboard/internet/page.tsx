@@ -5,15 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Wifi, 
   Router, 
   Signal, 
   Users, 
   Gauge, 
   TrendingUp, 
   Clock,
-  WifiOff,
-  AlertTriangle,
   CheckCircle,
   Activity
 } from "lucide-react";

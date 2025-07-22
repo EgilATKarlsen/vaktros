@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useStackApp, useUser } from "@stackframe/stack";
+import { useUser } from "@stackframe/stack";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,7 @@ interface OnboardingFlowProps {
     id: string;
     displayName: string | null;
     primaryEmail: string | null;
-    clientMetadata: any;
+    clientMetadata: Record<string, unknown>;
   };
   suggestedTeamName: string | null;
   userEmail: string | null;
@@ -90,9 +90,9 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
         router.push("/dashboard");
       }, 2000);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Onboarding error:", err);
-      setError(err.message || "An error occurred during onboarding");
+      setError(err instanceof Error ? err.message : "An error occurred during onboarding");
     } finally {
       setIsProcessing(false);
     }

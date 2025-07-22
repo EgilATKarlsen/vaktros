@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createTicket, addTicketAttachment } from "@/lib/db";
+import { createTicket, addTicketAttachment, Ticket } from "@/lib/db";
 import { stackServerApp } from "@/stack";
 
 export async function POST(request: NextRequest) {
@@ -47,8 +47,8 @@ export async function POST(request: NextRequest) {
     const ticket = await createTicket({
       title,
       description,
-      severity: severity as any,
-      category: category as any,
+      severity: severity as Ticket['severity'],
+      category: category as Ticket['category'],
       team_id: teamId,
       creator_id: userId,
       creator_name: userName,

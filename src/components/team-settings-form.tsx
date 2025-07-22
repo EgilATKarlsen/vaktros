@@ -90,12 +90,12 @@ export function TeamSettingsForm({ teamId, initialData }: TeamSettingsFormProps)
     try {
       // Update team metadata using Stack Auth
       await currentTeam.update({
-        clientMetadata: {
+        clientMetadata: JSON.parse(JSON.stringify({
           subscription: formData.subscription,
           billingPeriodEnd: formData.billingPeriodEnd,
           location: formData.location,
           industry: formData.industry,
-        },
+        })),
       });
 
       setSuccess("Organization settings updated successfully!");
