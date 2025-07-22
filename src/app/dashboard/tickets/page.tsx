@@ -187,10 +187,10 @@ export default function TicketsPage() {
 
       {/* Mobile Detail Panel - Full Screen Overlay */}
       {selectedTicket && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-background">
+        <div className="lg:hidden fixed inset-0 z-50 bg-white dark:bg-gray-900">
           <div className="h-full flex flex-col">
             {/* Mobile Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-background/95 backdrop-blur-sm">
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <Button 
                   variant="outline" 
@@ -211,7 +211,7 @@ export default function TicketsPage() {
             </div>
             
             {/* Content */}
-            <div className="flex-1 overflow-auto bg-background">
+            <div className="flex-1 overflow-auto bg-white dark:bg-gray-900">
               <TicketDetailPanel 
                 ticket={selectedTicket} 
                 onClose={handleCloseDetail}
