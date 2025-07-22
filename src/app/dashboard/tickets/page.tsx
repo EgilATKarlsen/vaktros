@@ -127,16 +127,6 @@ export default function TicketsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Action Bar */}
-      <div className="flex items-center justify-end">
-        <Link href="/dashboard/tickets/create">
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Create Ticket
-          </Button>
-        </Link>
-      </div>
-
       {/* Quick Stats */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card className="border-blue-500/20">
@@ -212,15 +202,25 @@ export default function TicketsPage() {
         <div className={selectedTicket ? "lg:col-span-2" : "lg:col-span-1"}>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TicketIcon className="h-5 w-5" />
-                All Tickets
-                {selectedTicket && (
-                  <span className="text-sm font-normal text-muted-foreground ml-2">
-                    (Click a ticket to view details)
-                  </span>
-                )}
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2">
+                    <TicketIcon className="h-5 w-5" />
+                    All Tickets
+                    {selectedTicket && (
+                      <span className="text-sm font-normal text-muted-foreground ml-2">
+                        (Click a ticket to view details)
+                      </span>
+                    )}
+                  </CardTitle>
+                </div>
+                <Link href="/dashboard/tickets/create">
+                  <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Ticket
+                  </Button>
+                </Link>
+              </div>
               <CardDescription>
                 Complete list of support tickets for your team with search and filtering
               </CardDescription>

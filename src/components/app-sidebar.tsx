@@ -17,6 +17,7 @@ import {
   Building,
   Mail,
   LifeBuoy,
+  Wifi,
 } from "lucide-react";
 
 import {
@@ -119,6 +120,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
       {
+        title: "Internet",
+        items: [
+          {
+            title: "Network Dashboard",
+            url: "/dashboard/internet",
+            icon: Wifi,
+          },
+        ],
+      },
+      {
         title: "Management",
         items: [
           {
@@ -136,11 +147,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: "Users",
             url: "/dashboard/users",
             icon: Users,
-          },
-          {
-            title: "Reports",
-            url: "/dashboard/reports",
-            icon: FileText,
           },
           {
             title: "Settings",
