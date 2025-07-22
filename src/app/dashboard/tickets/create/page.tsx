@@ -66,69 +66,70 @@ export default function CreateTicketPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Back Navigation */}
-      <div className="flex items-center gap-4">
+    <div className="space-y-4 sm:space-y-6 px-2 sm:px-0">
+      {/* Back Navigation - Mobile friendly */}
+      <div className="flex items-center gap-2 sm:gap-4">
         <Link href="/dashboard/tickets">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Tickets
+          <Button variant="outline" size="sm" className="text-xs sm:text-sm border-white/10">
+            <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Back to Tickets</span>
+            <span className="sm:hidden">Back</span>
           </Button>
         </Link>
       </div>
 
-      {/* Full width layout with main form and help section side by side on larger screens */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Main form takes up 2/3 of the width on large screens */}
-        <div className="lg:col-span-2">
+      {/* Mobile-first layout - Stack on mobile, side-by-side on desktop */}
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
+        {/* Help section - Show first on mobile for context */}
+        <div className="lg:col-span-1 lg:order-2">
+          <Card className="border-green-500/20 bg-green-500/5">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-green-400 text-base sm:text-lg">Tips for Better Support</CardTitle>
+            </CardHeader>
+            <CardContent className="px-3 sm:px-6">
+              <div className="space-y-3 text-xs sm:text-sm text-muted-foreground">
+                <div className="grid gap-3">
+                  <div>
+                    <p className="font-medium text-foreground mb-1 text-sm sm:text-base">Be Specific</p>
+                    <p>Include exact error messages, steps to reproduce, and expected vs actual behavior.</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground mb-1 text-sm sm:text-base">Attach Files</p>
+                    <p>Screenshots, logs, or configuration files help us understand the issue faster.</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground mb-1 text-sm sm:text-base">Choose Priority</p>
+                    <p>Critical for system outages, High for operational impact, Medium for general issues, Low for feature requests.</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground mb-1 text-sm sm:text-base">Response Time</p>
+                    <p>Our team typically responds within 24 hours during business days.</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main form - Takes full width on mobile, 2/3 on desktop */}
+        <div className="lg:col-span-2 lg:order-1">
           <Card className="border-blue-500/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5 text-blue-500" />
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
                 New Support Request
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs sm:text-sm">
                 Provide detailed information about your issue to help us resolve it quickly.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-3 sm:px-6">
               <CreateTicketForm
                 teamId={currentTeam.id}
                 userId={user?.id || ''}
                 userName={user?.displayName || 'Unknown User'}
                 userEmail={user?.primaryEmail || 'No email'}
               />
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Help section takes up 1/3 of the width on large screens, full width on smaller screens */}
-        <div className="lg:col-span-1">
-          <Card className="border-green-500/20 bg-green-500/5 h-fit">
-            <CardHeader>
-              <CardTitle className="text-green-400">Tips for Better Support</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <div className="grid gap-3">
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Be Specific</p>
-                    <p>Include exact error messages, steps to reproduce, and expected vs actual behavior.</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Attach Files</p>
-                    <p>Screenshots, logs, or configuration files help us understand the issue faster.</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Choose Priority</p>
-                    <p>Critical for system outages, High for operational impact, Medium for general issues, Low for feature requests.</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Response Time</p>
-                    <p>Our team typically responds within 24 hours during business days.</p>
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
