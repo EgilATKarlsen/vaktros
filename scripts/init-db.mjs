@@ -33,6 +33,15 @@ async function initDatabase() {
       )
     `;
     
+    // Create waitlist table
+    await sql`
+      CREATE TABLE IF NOT EXISTS waitlist (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
+    
     // Create ticket_attachments table
     await sql`
       CREATE TABLE IF NOT EXISTS ticket_attachments (
@@ -53,6 +62,8 @@ async function initDatabase() {
     await sql`CREATE INDEX IF NOT EXISTS idx_tickets_severity ON tickets(severity)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_tickets_created_at ON tickets(created_at DESC)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_ticket_attachments_ticket_id ON ticket_attachments(ticket_id)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_waitlist_email ON waitlist(email)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_waitlist_created_at ON waitlist(created_at DESC)`;
     
     // Create update trigger function
     await sql`
@@ -79,6 +90,7 @@ async function initDatabase() {
     console.log("✅ Database schema initialized successfully!");
     console.log("📊 Created tables:");
     console.log("  - tickets");
+    console.log("  - waitlist");
     console.log("  - ticket_attachments");
     console.log("🔧 Created indexes and triggers for optimal performance");
     
