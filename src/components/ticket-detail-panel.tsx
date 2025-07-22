@@ -15,11 +15,9 @@ import {
   Hash,
   Tag,
   FileText,
-  X,
-  ExternalLink
+  X
 } from "lucide-react";
 import { Ticket } from "@/lib/db";
-import Link from "next/link";
 
 interface TicketDetailPanelProps {
   ticket: Ticket;
@@ -75,7 +73,7 @@ export function TicketDetailPanel({ ticket, onClose, isMobile = false }: TicketD
   };
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col bg-white dark:bg-gray-900">
       {/* Header - Hidden on mobile since we have a dedicated mobile header */}
       {!isMobile && (
         <div className="flex items-center justify-between p-4 border-b border-white/10">
@@ -189,16 +187,6 @@ export function TicketDetailPanel({ ticket, onClose, isMobile = false }: TicketD
         <div className="space-y-3">
           <h4 className="text-sm font-medium">Actions</h4>
           <div className="space-y-2">
-            <Link href={`/dashboard/tickets/ticket/${ticket.id}`} className="block">
-              <Button 
-                variant="outline" 
-                size={isMobile ? "default" : "sm"} 
-                className="w-full justify-start border-white/10 h-11 sm:h-10"
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                View Full Details
-              </Button>
-            </Link>
             <Button 
               variant="outline" 
               size={isMobile ? "default" : "sm"} 
@@ -212,4 +200,4 @@ export function TicketDetailPanel({ ticket, onClose, isMobile = false }: TicketD
       </div>
     </div>
   );
-} 
+}
