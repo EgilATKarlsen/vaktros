@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { 
   Ticket as TicketIcon, 
-  Plus
+  Plus,
+  X
 } from "lucide-react";
 import { Ticket } from "@/lib/db";
 import { TicketsList } from "@/components/tickets-list";
@@ -187,11 +188,36 @@ export default function TicketsPage() {
       {/* Mobile Detail Panel - Full Screen Overlay */}
       {selectedTicket && (
         <div className="lg:hidden fixed inset-0 z-50 bg-background">
-          <div className="h-full overflow-auto">
-            <TicketDetailPanel 
-              ticket={selectedTicket} 
-              onClose={handleCloseDetail}
-            />
+          <div className="h-full flex flex-col">
+            {/* Mobile Header */}
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-background/95 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleCloseDetail}
+                  className="border-white/10 hover:bg-white/5"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+                <div className="flex items-center gap-2">
+                  <TicketIcon className="w-4 h-4 text-blue-400" />
+                  <span className="text-blue-400 font-mono text-sm">#{selectedTicket.id}</span>
+                </div>
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Ticket Details
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="flex-1 overflow-auto bg-background">
+              <TicketDetailPanel 
+                ticket={selectedTicket} 
+                onClose={handleCloseDetail}
+                isMobile={true}
+              />
+            </div>
           </div>
         </div>
       )}
