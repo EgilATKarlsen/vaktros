@@ -47,16 +47,18 @@ export async function DELETE(
       );
     }
 
-    // Get the target user
-    const targetUser = await stackServerApp.getUser({ userId });
+    // Get the target user from team members
+    const teamMembers = await currentTeam.listUsers();
+    const targetUser = teamMembers.find(member => member.id === userId);
+    
     if (!targetUser) {
       return NextResponse.json(
-        { success: false, error: "User not found" },
+        { success: false, error: "User not found in this team" },
         { status: 404 }
       );
     }
 
-    // Check if target user is part of the team
+    // Check if target user is part of the team (redundant check, but keeping for clarity)
     const targetUserTeams = await targetUser.listTeams();
     const targetUserInTeam = targetUserTeams.find(team => team.id === teamId);
     
