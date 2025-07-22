@@ -5,26 +5,26 @@ import { Marquee } from "@/components/magicui/marquee"
 import GlitchText from "@/components/glitch-text"
 
 const testimonials = [
-  {
+  /* {
     name: "Sarah Chen",
     business: "NOVIG (YC S22)",
     type: "Sports Betting Platform",
     body: "VAKTROS's office infrastructure installation helped us meet regulatory compliance requirements for our sports betting platform. Their surveillance and network setup ensures we maintain proper oversight.",
     img: "https://avatar.vercel.sh/sarah",
-  },
+  }, */
   {
     name: "Mike Rodriguez",
-    business: "Precision Aerospace Manufacturing",
-    type: "Aerospace Manufacturing",
-    body: "The integrated surveillance and network monitoring helps us maintain OSHA compliance and reduce liability risks on the factory floor. Critical for our defense contracts.",
+    business: "Irving Nuclear",
+    type: "Nuclear Components Manufacturing",
+    body: "The integrated surveillance and network monitoring helps us maintain strict regulatory compliance and reduce liability risks in our specialized manufacturing facility. Critical for our nuclear industry contracts.",
     img: "https://avatar.vercel.sh/mike",
   },
   {
-    name: "Emma Thompson",
+    name: "Ashish Bajaj",
     business: "Dime (YC W24)",
     type: "Healthcare Tech Startup",
     body: "VAKTROS secured our office space with HIPAA-compliant infrastructure. Their innovative installation approach got our healthcare tech operations running quickly while meeting strict regulatory requirements.",
-    img: "https://avatar.vercel.sh/emma",
+    img: "https://avatar.vercel.sh/ashish",
   },
   {
     name: "David Park",
@@ -34,25 +34,25 @@ const testimonials = [
     img: "https://avatar.vercel.sh/david",
   },
   {
-    name: "Lisa Martinez",
+    name: "Eric Mei",
     business: "OpenCall (YC W24)",
     type: "Voice AI Startup",
     body: "They transformed our coworking space with smart network infrastructure and security monitoring. Perfect for our voice AI development needs with reliable connectivity and compliance features.",
-    img: "https://avatar.vercel.sh/lisa",
+    img: "https://avatar.vercel.sh/eric",
   },
   {
     name: "James Wilson",
-    business: "Titan Manufacturing Solutions",
-    type: "Industrial Manufacturing",
-    body: "Their data-driven approach to workplace safety helped us reduce insurance premiums by 25%. The liability protection through comprehensive monitoring is invaluable.",
+    business: "InterTalk Critical Information Systems",
+    type: "Communications Manufacturing",
+    body: "Their data-driven approach to workplace safety helped us reduce insurance premiums by 25%. The liability protection through comprehensive monitoring is invaluable for our critical systems manufacturing.",
     img: "https://avatar.vercel.sh/james",
   },
   {
-    name: "Rachel Kim",
+    name: "Raghav Podder",
     business: "SuperOrder (YC S19)",
     type: "Restaurant Optimization",
     body: "VAKTROS secured our office space with comprehensive surveillance and network infrastructure. Essential for managing our restaurant review optimization platform with proper data protection.",
-    img: "https://avatar.vercel.sh/rachel",
+    img: "https://avatar.vercel.sh/raghav",
   },
   {
     name: "Tony Ricci",
@@ -63,17 +63,17 @@ const testimonials = [
   },
   {
     name: "Amanda Foster",
-    business: "Advanced Composites Manufacturing",
-    type: "Aerospace Manufacturing",
-    body: "VAKTROS's innovative approach to leveraging surveillance data for safety compliance is game-changing. We've eliminated workplace incidents through proactive monitoring.",
+    business: "Precision Machining Solutions",
+    type: "Precision Manufacturing",
+    body: "VAKTROS's innovative approach to leveraging surveillance data for safety compliance is game-changing. We've eliminated workplace incidents through proactive monitoring in our machine shop.",
     img: "https://avatar.vercel.sh/amanda",
   },
   {
-    name: "Carlos Mendez",
+    name: "Andre Fu",
     business: "Ecliptor (YC W24)",
     type: "Document OCR Company",
     body: "They got our SF office operational fast with secure network and surveillance infrastructure. Perfect for our document OCR operations with the data security and compliance we need.",
-    img: "https://avatar.vercel.sh/carlos",
+    img: "https://avatar.vercel.sh/andre",
   },
 ]
 
