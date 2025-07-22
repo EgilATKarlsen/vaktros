@@ -142,25 +142,27 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 sm:space-y-4">
       {/* Search and Filter Controls */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex-1 max-w-md">
+      <div className="flex flex-col gap-3 sm:gap-4">
+        {/* Search Bar - Full width on mobile */}
+        <div className="w-full">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
-              placeholder="Search tickets by title, description, creator, or ID..."
+              placeholder="Search tickets..."
               value={filters.search}
               onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-              className="pl-10 border-white/10 bg-background"
+              className="pl-10 border-white/10 bg-background text-sm"
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Filter Controls - Stack on mobile */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-2 sm:items-center">
           {/* Status Filter */}
           <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
-            <SelectTrigger className="w-32 border-white/10">
+            <SelectTrigger className="w-full sm:w-32 border-white/10 text-sm">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -174,7 +176,7 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
 
           {/* Severity Filter */}
           <Select value={filters.severity} onValueChange={(value) => setFilters(prev => ({ ...prev, severity: value }))}>
-            <SelectTrigger className="w-32 border-white/10">
+            <SelectTrigger className="w-full sm:w-32 border-white/10 text-sm">
               <SelectValue placeholder="Severity" />
             </SelectTrigger>
             <SelectContent>
@@ -188,7 +190,7 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
 
           {/* Category Filter */}
           <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
-            <SelectTrigger className="w-40 border-white/10">
+            <SelectTrigger className="w-full sm:w-40 border-white/10 text-sm">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -203,40 +205,40 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
 
           {/* Clear Filters Button */}
           {hasActiveFilters && (
-            <Button variant="outline" size="sm" onClick={clearFilters} className="border-white/10">
+            <Button variant="outline" size="sm" onClick={clearFilters} className="border-white/10 w-full sm:w-auto text-sm">
               <X className="w-4 h-4 mr-2" />
-              Clear
+              Clear Filters
             </Button>
           )}
         </div>
       </div>
 
       {/* Results Summary */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm text-muted-foreground gap-2">
         <span>
           Showing {filteredTickets.length} of {tickets.length} tickets
         </span>
         {hasActiveFilters && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs">Filters active:</span>
+          <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+            <span className="text-xs">Filters:</span>
             {filters.status !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                Status: {filters.status}
+              <Badge variant="secondary" className="text-xs px-2 py-0">
+                {filters.status}
               </Badge>
             )}
             {filters.severity !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                Severity: {filters.severity}
+              <Badge variant="secondary" className="text-xs px-2 py-0">
+                {filters.severity}
               </Badge>
             )}
             {filters.category !== 'all' && (
-              <Badge variant="secondary" className="text-xs">
-                Category: {filters.category}
+              <Badge variant="secondary" className="text-xs px-2 py-0">
+                {filters.category.replace(' ', '')}
               </Badge>
             )}
             {filters.search && (
-              <Badge variant="secondary" className="text-xs">
-                Search: &ldquo;{filters.search}&rdquo;
+              <Badge variant="secondary" className="text-xs px-2 py-0 max-w-20 truncate">
+                &ldquo;{filters.search}&rdquo;
               </Badge>
             )}
           </div>
@@ -244,20 +246,20 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
       </div>
 
       {/* Tickets List */}
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {filteredTickets.length === 0 ? (
           <Card className="border-dashed">
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Search className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No tickets found</h3>
-              <p className="text-muted-foreground text-center mb-4">
+            <CardContent className="flex flex-col items-center justify-center py-8 sm:py-12">
+              <Search className="w-8 h-8 sm:w-12 sm:h-12 text-muted-foreground mb-4" />
+              <h3 className="text-base sm:text-lg font-semibold mb-2">No tickets found</h3>
+              <p className="text-muted-foreground text-center mb-4 text-sm px-4">
                 {hasActiveFilters 
                   ? "Try adjusting your search or filter criteria"
                   : "No tickets match your current filters"
                 }
               </p>
               {hasActiveFilters && (
-                <Button variant="outline" size="sm" onClick={clearFilters}>
+                <Button variant="outline" size="sm" onClick={clearFilters} className="text-sm">
                   Clear filters
                 </Button>
               )}
@@ -274,57 +276,57 @@ export function TicketsList({ tickets, selectedTicketId, onTicketSelect }: Ticke
               }`}
               onClick={() => handleTicketClick(ticket)}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg mb-2 flex items-center gap-2">
-                      <span className="text-blue-400">#{ticket.id}</span>
-                      {ticket.title}
+              <CardHeader className="pb-2 sm:pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-0">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base sm:text-lg mb-1 sm:mb-2 flex items-center gap-2">
+                      <span className="text-blue-400 text-sm sm:text-base">#{ticket.id}</span>
+                      <span className="truncate">{ticket.title}</span>
                     </CardTitle>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <User className="w-4 h-4" />
-                        {ticket.creator_name}
+                        <User className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="truncate">{ticket.creator_name}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {formatDate(ticket.created_at)}
+                        <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="text-xs">{formatDate(ticket.created_at)}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-shrink-0">
                     <Badge 
                       variant="outline" 
-                      className={`${getSeverityColor(ticket.severity)} text-xs`}
+                      className={`${getSeverityColor(ticket.severity)} text-xs px-2 py-0`}
                     >
                       {ticket.severity}
                     </Badge>
                     <Badge 
                       variant="outline" 
-                      className={`${getStatusColor(ticket.status)} text-xs flex items-center gap-1`}
+                      className={`${getStatusColor(ticket.status)} text-xs flex items-center gap-1 px-2 py-0`}
                     >
                       {getStatusIcon(ticket.status)}
-                      {ticket.status}
+                      <span className="hidden sm:inline">{ticket.status}</span>
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+              <CardContent className="pt-0">
+                <div className="space-y-2 sm:space-y-3">
                   <div>
-                    <Badge variant="secondary" className="mb-2 text-xs">
+                    <Badge variant="secondary" className="mb-2 text-xs px-2 py-0">
                       {ticket.category}
                     </Badge>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
                       {ticket.description}
                     </p>
                   </div>
                   
-                  <div className="text-xs text-muted-foreground">
-                    {ticket.updated_at !== ticket.created_at && (
+                  {ticket.updated_at !== ticket.created_at && (
+                    <div className="text-xs text-muted-foreground">
                       <span>Updated {formatDate(ticket.updated_at)}</span>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
