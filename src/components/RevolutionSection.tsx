@@ -1,48 +1,50 @@
 import GlitchText from "@/components/glitch-text";
-import { MessageCircleWarning, Eye, Zap, BarChart4, Lock, Cpu } from "lucide-react";
+import { Network, Zap, Wrench, BarChart4, Shield, Cpu } from "lucide-react";
 
 export default function RevolutionSection() {
   return (
     <section id="revolution" className="py-20 relative overflow-hidden border-t border-border/10">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 text-center">
-          <GlitchText>Revolutionizing Physical Security</GlitchText>
+          <GlitchText>Revolutionizing IT Operations</GlitchText>
         </h2>
         <div className="max-w-4xl mx-auto">
           <p className="text-lg text-muted-foreground mb-10 text-center">
-            Our proprietary AI models analyze video feeds in milliseconds, identifying potential threats and anomalies faster than human operators could ever achieve.
+            We serve offices, manufacturing, construction, and other industries with innovative installation and 
+            continued management. Our novel approach leverages network and surveillance data to improve workplace 
+            safety from regulatory, liability, and compliance perspectives.
           </p>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
-                  <MessageCircleWarning className="h-5 w-5 text-orange-600 dark:text-red-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Instant Alert Notifications</h3>
-                  <p className="text-muted-foreground">Receive real-time text, push, and email notifications for security events, ensuring critical incidents are never missed regardless of where you are.</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
-                  <Eye className="h-5 w-5 text-orange-600 dark:text-red-400" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Proactive Threat Detection</h3>
-                  <p className="text-muted-foreground">Identify suspicious behavior patterns before incidents occur, allowing security personnel to intervene at the earliest possible moment.</p>
-                </div>
-              </div>
-            </div>
             <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
               <div className="flex items-start gap-4 mb-4">
                 <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
                   <Zap className="h-5 w-5 text-orange-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Real-Time Processing</h3>
-                  <p className="text-muted-foreground">Process thousands of video streams simultaneously with sub-millisecond latency, enabling immediate response to security events.</p>
+                  <h3 className="text-xl font-bold mb-2">Innovative Installation</h3>
+                  <p className="text-muted-foreground">Direct installation approach across offices, manufacturing, and construction sites with rapid deployment and continued management services.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
+                  <Network className="h-5 w-5 text-orange-600 dark:text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Data-Driven Safety</h3>
+                  <p className="text-muted-foreground">Leverage network and surveillance data to identify safety risks, ensure regulatory compliance, and reduce liability exposure across your operations.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
+                  <Shield className="h-5 w-5 text-orange-600 dark:text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Regulatory Compliance</h3>
+                  <p className="text-muted-foreground">Ensure workplace safety standards and regulatory requirements are met through continuous monitoring and data analysis across all industry sectors.</p>
                 </div>
               </div>
             </div>
@@ -52,8 +54,8 @@ export default function RevolutionSection() {
                   <BarChart4 className="h-5 w-5 text-orange-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Actionable Analytics</h3>
-                  <p className="text-muted-foreground">Transform raw surveillance data into meaningful insights with customizable dashboards and automated reporting.</p>
+                  <h3 className="text-xl font-bold mb-2">Liability Protection</h3>
+                  <p className="text-muted-foreground">Reduce liability risks through comprehensive surveillance and network monitoring that provides documentation and insights for workplace incidents.</p>
                 </div>
               </div>
             </div>
@@ -62,11 +64,11 @@ export default function RevolutionSection() {
             <div className="bg-card/30 backdrop-blur-sm p-6 border border-border/10 rounded-lg">
               <div className="flex items-start gap-4 mb-4">
                 <div className="h-10 w-10 rounded-full bg-orange-600/20 dark:bg-red-500/20 flex items-center justify-center shrink-0">
-                  <Lock className="h-5 w-5 text-orange-600 dark:text-red-400" />
+                  <Wrench className="h-5 w-5 text-orange-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Enterprise-Grade Security</h3>
-                  <p className="text-muted-foreground">End-to-end encryption and robust access controls ensure your surveillance data remains protected at all times.</p>
+                  <h3 className="text-xl font-bold mb-2">Continued Management</h3>
+                  <p className="text-muted-foreground">Ongoing maintenance and optimization of your security and network infrastructure across manufacturing, construction, and office environments.</p>
                 </div>
               </div>
             </div>
@@ -76,8 +78,8 @@ export default function RevolutionSection() {
                   <Cpu className="h-5 w-5 text-orange-600 dark:text-red-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold mb-2">Seamless Integration</h3>
-                  <p className="text-muted-foreground">Works with your existing camera infrastructure and security systems, eliminating the need for costly hardware replacements.</p>
+                  <h3 className="text-xl font-bold mb-2">Multi-Industry Expertise</h3>
+                  <p className="text-muted-foreground">Proven experience across diverse sectors including Y Combinator portfolio companies, with tailored solutions for each industry&apos;s unique safety and compliance needs.</p>
                 </div>
               </div>
             </div>
