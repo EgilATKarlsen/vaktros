@@ -24,9 +24,10 @@ import Link from "next/link";
 interface TicketDetailPanelProps {
   ticket: Ticket;
   onClose: () => void;
+  isMobile?: boolean;
 }
 
-export function TicketDetailPanel({ ticket, onClose }: TicketDetailPanelProps) {
+export function TicketDetailPanel({ ticket, onClose, isMobile = false }: TicketDetailPanelProps) {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'Critical': return 'bg-red-500/20 text-red-400 border-red-500/20';
@@ -75,33 +76,35 @@ export function TicketDetailPanel({ ticket, onClose }: TicketDetailPanelProps) {
 
   return (
     <div className="w-full h-full flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <Hash className="w-4 h-4 text-blue-400" />
-          <span className="text-blue-400 font-mono text-sm">#{ticket.id}</span>
+      {/* Header - Hidden on mobile since we have a dedicated mobile header */}
+      {!isMobile && (
+        <div className="flex items-center justify-between p-4 border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <Hash className="w-4 h-4 text-blue-400" />
+            <span className="text-blue-400 font-mono text-sm">#{ticket.id}</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X className="w-4 h-4" />
+          </Button>
         </div>
-        <Button variant="ghost" size="sm" onClick={onClose}>
-          <X className="w-4 h-4" />
-        </Button>
-      </div>
+      )}
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      <div className={`flex-1 overflow-y-auto ${isMobile ? 'p-3' : 'p-4'} space-y-4 sm:space-y-6`}>
         {/* Title and Status */}
         <div>
-          <h3 className="text-lg font-semibold mb-3 leading-tight">{ticket.title}</h3>
-          <div className="flex items-center gap-2 mb-4">
+          <h3 className={`font-semibold mb-3 leading-tight ${isMobile ? 'text-base' : 'text-lg'}`}>{ticket.title}</h3>
+          <div className="flex flex-wrap items-center gap-2 mb-4">
             <Badge 
               variant="outline" 
-              className={`${getStatusColor(ticket.status)} flex items-center gap-1`}
+              className={`${getStatusColor(ticket.status)} flex items-center gap-1 text-xs`}
             >
               {getStatusIcon(ticket.status)}
               {ticket.status}
             </Badge>
             <Badge 
               variant="outline" 
-              className={`${getSeverityColor(ticket.severity)}`}
+              className={`${getSeverityColor(ticket.severity)} text-xs`}
             >
               {ticket.severity}
             </Badge>
@@ -118,7 +121,7 @@ export function TicketDetailPanel({ ticket, onClose }: TicketDetailPanelProps) {
             <span className="text-sm font-medium">Description</span>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-lg p-3">
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+            <p className={`text-muted-foreground whitespace-pre-wrap ${isMobile ? 'text-sm' : 'text-sm'}`}>
               {ticket.description}
             </p>
           </div>
@@ -127,46 +130,46 @@ export function TicketDetailPanel({ ticket, onClose }: TicketDetailPanelProps) {
         <Separator className="bg-white/10" />
 
         {/* Ticket Details */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <h4 className="text-sm font-medium">Ticket Details</h4>
           
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <User className="w-4 h-4 text-muted-foreground" />
-              <div className="flex-1">
+              <User className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <div className="flex-1 min-w-0">
                 <p className="text-xs text-muted-foreground">Created by</p>
-                <p className="text-sm font-medium">{ticket.creator_name}</p>
+                <p className={`font-medium ${isMobile ? 'text-sm' : 'text-sm'} truncate`}>{ticket.creator_name}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Mail className="w-4 h-4 text-muted-foreground" />
-              <div className="flex-1">
+              <Mail className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <div className="flex-1 min-w-0">
                 <p className="text-xs text-muted-foreground">Email</p>
-                <p className="text-sm font-medium">{ticket.creator_email}</p>
+                <p className={`font-medium ${isMobile ? 'text-sm' : 'text-sm'} truncate`}>{ticket.creator_email}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <div className="flex-1">
+              <Calendar className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+              <div className="flex-1 min-w-0">
                 <p className="text-xs text-muted-foreground">Created</p>
-                <p className="text-sm font-medium">{formatLongDate(ticket.created_at)}</p>
+                <p className={`font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{formatLongDate(ticket.created_at)}</p>
               </div>
             </div>
 
             {ticket.updated_at !== ticket.created_at && (
               <div className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                <div className="flex-1">
+                <Clock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                <div className="flex-1 min-w-0">
                   <p className="text-xs text-muted-foreground">Last updated</p>
-                  <p className="text-sm font-medium">{formatLongDate(ticket.updated_at)}</p>
+                  <p className={`font-medium ${isMobile ? 'text-xs' : 'text-sm'}`}>{formatLongDate(ticket.updated_at)}</p>
                 </div>
               </div>
             )}
 
             <div className="flex items-center gap-3">
-              <Tag className="w-4 h-4 text-muted-foreground" />
+              <Tag className="w-4 h-4 text-muted-foreground flex-shrink-0" />
               <div className="flex-1">
                 <p className="text-xs text-muted-foreground">Priority</p>
                 <Badge 
@@ -187,12 +190,20 @@ export function TicketDetailPanel({ ticket, onClose }: TicketDetailPanelProps) {
           <h4 className="text-sm font-medium">Actions</h4>
           <div className="space-y-2">
             <Link href={`/dashboard/tickets/ticket/${ticket.id}`} className="block">
-              <Button variant="outline" size="sm" className="w-full justify-start border-white/10">
+              <Button 
+                variant="outline" 
+                size={isMobile ? "default" : "sm"} 
+                className="w-full justify-start border-white/10 h-11 sm:h-10"
+              >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 View Full Details
               </Button>
             </Link>
-            <Button variant="outline" size="sm" className="w-full justify-start border-white/10">
+            <Button 
+              variant="outline" 
+              size={isMobile ? "default" : "sm"} 
+              className="w-full justify-start border-white/10 h-11 sm:h-10"
+            >
               <Mail className="w-4 h-4 mr-2" />
               Reply to Ticket
             </Button>
