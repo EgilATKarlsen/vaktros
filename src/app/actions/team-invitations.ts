@@ -30,14 +30,15 @@ export async function checkTeamInvitation(code: string) {
         console.log("🔐 Session found, checking for accessToken...");
         // Call getTokens() method to get the actual tokens
         const tokens = await session.getTokens();
-        accessToken = tokens.accessToken;
+        accessToken = tokens.accessToken || undefined; // Handle null case
         console.log("🔐 Session accessToken:", !!accessToken);
       } else {
         console.log("🔐 No current session, trying getAuthHeaders...");
         // Alternative: try to get auth headers
         const authHeaders = await user.getAuthHeaders();
         console.log("🔐 Auth headers:", Object.keys(authHeaders));
-        accessToken = authHeaders.authorization?.replace('Bearer ', '');
+        // Use the correct header property
+        accessToken = authHeaders["x-stack-auth"];
       }
     } catch (error) {
       console.warn("⚠️ Could not get access token:", error);
@@ -171,14 +172,15 @@ export async function acceptTeamInvitation(code: string) {
         console.log("🔐 Session found, checking for accessToken...");
         // Call getTokens() method to get the actual tokens
         const tokens = await session.getTokens();
-        accessToken = tokens.accessToken;
+        accessToken = tokens.accessToken || undefined; // Handle null case
         console.log("🔐 Session accessToken:", !!accessToken);
       } else {
         console.log("🔐 No current session, trying getAuthHeaders...");
         // Alternative: try to get auth headers
         const authHeaders = await user.getAuthHeaders();
         console.log("🔐 Auth headers:", Object.keys(authHeaders));
-        accessToken = authHeaders.authorization?.replace('Bearer ', '');
+        // Use the correct header property
+        accessToken = authHeaders["x-stack-auth"];
       }
     } catch (error) {
       console.warn("⚠️ Could not get access token:", error);

@@ -16,7 +16,7 @@ import {
   Home,
   Building,
   Mail,
-  UserPlus,
+  LifeBuoy,
 } from "lucide-react";
 
 import {
@@ -33,88 +33,125 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import GlitchText from "@/components/glitch-text";
-
-const data = {
-  navMain: [
-    {
-      title: "Overview",
-      items: [
-        {
-          title: "Dashboard",
-          url: "/dashboard",
-          icon: Home,
-        },
-        {
-          title: "Live Surveillance",
-          url: "/dashboard/surveillance",
-          icon: Camera,
-        },
-        {
-          title: "Analytics",
-          url: "/dashboard/analytics",
-          icon: BarChart3,
-        },
-      ],
-    },
-    {
-      title: "Security",
-      items: [
-        {
-          title: "Threat Detection",
-          url: "/dashboard/threats",
-          icon: Shield,
-        },
-        {
-          title: "Alerts",
-          url: "/dashboard/alerts",
-          icon: AlertTriangle,
-        },
-        {
-          title: "Activity Log",
-          url: "/dashboard/activity",
-          icon: Activity,
-        },
-      ],
-    },
-    {
-      title: "Management",
-      items: [
-        {
-          title: "Teams",
-          url: "/dashboard/teams",
-          icon: Building,
-        },
-        {
-          title: "Invite Members",
-          url: "/dashboard/teams/invite",
-          icon: Mail,
-        },
-        {
-          title: "Join Team",
-          url: "/dashboard/teams/join",
-          icon: UserPlus,
-        },
-        {
-          title: "Users",
-          url: "/dashboard/users",
-          icon: Users,
-        },
-        {
-          title: "Reports",
-          url: "/dashboard/reports",
-          icon: FileText,
-        },
-        {
-          title: "Settings",
-          url: "/dashboard/settings",
-          icon: Settings,
-        },
-      ],
-    },
-  ],
-};
+import { useUser } from "@stackframe/stack";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const user = useUser();
+  const userTeams = user?.useTeams() || [];
+  const currentTeam = userTeams[0] || null;
+  const [isAdmin, setIsAdmin] = React.useState(false);
+
+  React.useEffect(() => {
+    async function checkAdminStatus() {
+      if (!user || !currentTeam) {
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        const permissions = await user.listPermissions(currentTeam);
+        const hasAdminPermission = permissions.some(permission => permission.id === 'team_admin');
+        setIsAdmin(hasAdminPermission);
+      } catch (error) {
+        console.warn("Error checking admin status:", error);
+        setIsAdmin(false);
+      }
+    }
+
+    checkAdminStatus();
+  }, [user, currentTeam]);
+
+  const data = {
+    navMain: [
+      {
+        title: "Overview",
+        items: [
+          {
+            title: "Dashboard",
+            url: "/dashboard",
+            icon: Home,
+          },
+          {
+            title: "Live Surveillance",
+            url: "/dashboard/surveillance",
+            icon: Camera,
+          },
+          {
+            title: "Analytics",
+            url: "/dashboard/analytics",
+            icon: BarChart3,
+          },
+        ],
+      },
+      {
+        title: "Security",
+        items: [
+          {
+            title: "Threat Detection",
+            url: "/dashboard/threats",
+            icon: Shield,
+          },
+          {
+            title: "Alerts",
+            url: "/dashboard/alerts",
+            icon: AlertTriangle,
+          },
+          {
+            title: "Activity Log",
+            url: "/dashboard/activity",
+            icon: Activity,
+          },
+        ],
+      },
+      {
+        title: "Tickets",
+        items: [
+          {
+            title: "All Tickets",
+            url: "/dashboard/tickets",
+            icon: LifeBuoy,
+          },
+          {
+            title: "Create Ticket",
+            url: "/dashboard/tickets/create",
+            icon: FileText,
+          },
+        ],
+      },
+      {
+        title: "Management",
+        items: [
+          {
+            title: "Teams",
+            url: "/dashboard/teams",
+            icon: Building,
+          },
+          // Only show Invite Members for team admins
+          ...(isAdmin ? [{
+            title: "Invite Members",
+            url: "/dashboard/teams/invite",
+            icon: Mail,
+          }] : []),
+          {
+            title: "Users",
+            url: "/dashboard/users",
+            icon: Users,
+          },
+          {
+            title: "Reports",
+            url: "/dashboard/reports",
+            icon: FileText,
+          },
+          {
+            title: "Settings",
+            url: "/dashboard/settings",
+            icon: Settings,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
