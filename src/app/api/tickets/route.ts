@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getTicketsByTeam } from '@/lib/db';
-import { stackServerApp } from '@/stack';
+import { getAuthenticatedUser } from '@/lib/auth-utils';
 
 export async function GET() {
   try {
-    // Get the user from the Stack auth
-    const user = await stackServerApp.getUser();
+    // Get the user from the Stack auth - handle redirect errors gracefully
+    const user = await getAuthenticatedUser();
     
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -16,7 +16,12 @@ export async function GET() {
     const currentTeam = userTeams?.[0] || null;
 
     if (!currentTeam) {
-      return NextResponse.json({ error: 'No team found' }, { status: 404 });
+      // Return empty state instead of 404 when user has no team
+      return NextResponse.json({ 
+        tickets: [], 
+        team: null,
+        message: 'No team found. Please create or join a team to view tickets.'
+      });
     }
 
     // Get team tickets

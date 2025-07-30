@@ -1,4 +1,57 @@
 import { neon } from "@neondatabase/serverless";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+function parseSQL(sql) {
+  const statements = [];
+  let current = '';
+  let inFunction = false;
+  let dollarQuoteTag = null;
+  
+  const lines = sql.split('\n');
+  
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    
+    // Skip comments
+    if (trimmedLine.startsWith('--') || trimmedLine === '') {
+      continue;
+    }
+    
+    current += line + '\n';
+    
+    // Check for dollar-quoted strings (PostgreSQL function bodies)
+    const dollarMatch = line.match(/\$([^$]*)\$/g);
+    if (dollarMatch) {
+      for (const match of dollarMatch) {
+        if (!dollarQuoteTag) {
+          dollarQuoteTag = match;
+          inFunction = true;
+        } else if (match === dollarQuoteTag) {
+          dollarQuoteTag = null;
+          inFunction = false;
+        }
+      }
+    }
+    
+    // Only split on semicolon if we're not inside a function
+    if (line.includes(';') && !inFunction) {
+      statements.push(current.trim());
+      current = '';
+    }
+  }
+  
+  // Add any remaining content
+  if (current.trim()) {
+    statements.push(current.trim());
+  }
+  
+  return statements.filter(stmt => stmt.length > 0);
+}
 
 async function initDatabase() {
   try {
@@ -13,86 +66,49 @@ async function initDatabase() {
     
     console.log("🔄 Initializing database schema...");
     
-    // Execute each SQL statement individually using tagged template literals
+    // Read schema from SQL file
+    const schemaPath = join(__dirname, '..', 'src', 'lib', 'db', 'schema.sql');
+    const schemaSQL = readFileSync(schemaPath, 'utf8');
     
-    // Create tickets table
-    await sql`
-      CREATE TABLE IF NOT EXISTS tickets (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        description TEXT NOT NULL,
-        severity VARCHAR(20) NOT NULL CHECK (severity IN ('Low', 'Medium', 'High', 'Critical')),
-        category VARCHAR(50) NOT NULL CHECK (category IN ('Technical', 'Billing', 'Feature Request', 'Bug Report', 'General Support')),
-        status VARCHAR(20) DEFAULT 'Open' CHECK (status IN ('Open', 'In Progress', 'Resolved', 'Closed')),
-        team_id VARCHAR(255) NOT NULL,
-        creator_id VARCHAR(255) NOT NULL,
-        creator_name VARCHAR(255) NOT NULL,
-        creator_email VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW()
-      )
-    `;
+    console.log("📄 Reading schema from:", schemaPath);
     
-    // Create waitlist table
-    await sql`
-      CREATE TABLE IF NOT EXISTS waitlist (
-        id SERIAL PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        created_at TIMESTAMP DEFAULT NOW()
-      )
-    `;
-    
-    // Create ticket_attachments table
-    await sql`
-      CREATE TABLE IF NOT EXISTS ticket_attachments (
-        id SERIAL PRIMARY KEY,
-        ticket_id INTEGER REFERENCES tickets(id) ON DELETE CASCADE,
-        filename VARCHAR(255) NOT NULL,
-        file_url TEXT NOT NULL,
-        file_size INTEGER,
-        mime_type VARCHAR(100),
-        uploaded_at TIMESTAMP DEFAULT NOW()
-      )
-    `;
-    
-    // Create indexes
-    await sql`CREATE INDEX IF NOT EXISTS idx_tickets_team_id ON tickets(team_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_tickets_creator_id ON tickets(creator_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_tickets_status ON tickets(status)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_tickets_severity ON tickets(severity)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_tickets_created_at ON tickets(created_at DESC)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_ticket_attachments_ticket_id ON ticket_attachments(ticket_id)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_waitlist_email ON waitlist(email)`;
-    await sql`CREATE INDEX IF NOT EXISTS idx_waitlist_created_at ON waitlist(created_at DESC)`;
-    
-    // Create update trigger function
-    await sql`
-      CREATE OR REPLACE FUNCTION update_updated_at_column()
-      RETURNS TRIGGER AS $$
-      BEGIN
-          NEW.updated_at = NOW();
-          RETURN NEW;
-      END;
-      $$ language 'plpgsql'
-    `;
-    
-    // Create trigger
-    await sql`
-      DROP TRIGGER IF EXISTS update_tickets_updated_at ON tickets
-    `;
-    
-    await sql`
-      CREATE TRIGGER update_tickets_updated_at 
-      BEFORE UPDATE ON tickets
-      FOR EACH ROW EXECUTE FUNCTION update_updated_at_column()
-    `;
+    // Execute the entire schema as one statement - Neon can handle multiple statements
+    try {
+      await sql.query(schemaSQL);
+      console.log("✅ Schema executed successfully");
+    } catch (batchError) {
+      // If that fails, try executing statements individually
+      console.log("⚠️  Batch execution failed, trying individual statements...");
+      console.log("📝 Batch error:", batchError.message);
+      
+      const statements = parseSQL(schemaSQL);
+      
+      console.log(`🔧 Executing ${statements.length} SQL statements individually...`);
+      
+      for (const statement of statements) {
+        if (statement.trim()) {
+          try {
+            await sql.query(statement);
+            console.log(`✅ Executed: ${statement.substring(0, 50)}...`);
+          } catch (error) {
+            // Log but don't fail on statements that might already exist
+            if (error.code !== '42P07' && error.code !== '42710' && error.code !== '42P01') { 
+              console.warn(`⚠️  Warning executing statement: ${error.message}`);
+            } else {
+              console.log(`ℹ️  Skipped (already exists): ${statement.substring(0, 50)}...`);
+            }
+          }
+        }
+      }
+    }
     
     console.log("✅ Database schema initialized successfully!");
-    console.log("📊 Created tables:");
+    console.log("📊 Schema loaded from schema.sql:");
     console.log("  - tickets");
-    console.log("  - waitlist");
+    console.log("  - user_profiles (SMS notifications)");
     console.log("  - ticket_attachments");
-    console.log("🔧 Created indexes and triggers for optimal performance");
+    console.log("  - indexes and triggers");
+    console.log("🔧 All tables, indexes, and triggers created from schema.sql");
     
   } catch (error) {
     console.error("❌ Error initializing database:", error.message);

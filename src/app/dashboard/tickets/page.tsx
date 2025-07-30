@@ -23,7 +23,8 @@ interface Team {
 
 interface TicketsResponse {
   tickets: Ticket[];
-  team: Team;
+  team: Team | null;
+  message?: string;
 }
 
 export default function TicketsPage() {
@@ -65,8 +66,14 @@ export default function TicketsPage() {
         setTickets(data.tickets);
         setCurrentTeam(data.team);
 
-        // Set the header title and subheading
-        setHeader('Support Tickets', `Manage and track all support requests for ${data.team.displayName}`);
+        // Handle case where user has no team
+        if (!data.team) {
+          setHeader('Support Tickets', data.message || 'No team found');
+          setError(data.message || 'No team found. Please create or join a team to view tickets.');
+        } else {
+          // Set the header title and subheading
+          setHeader('Support Tickets', `Manage and track all support requests for ${data.team.displayName}`);
+        }
 
       } catch (error) {
         console.error('Error loading tickets:', error);
@@ -107,7 +114,23 @@ export default function TicketsPage() {
   }
 
   if (!currentTeam) {
-    return null;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <TicketIcon className="h-12 w-12 mx-auto text-blue-500 mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No Team Found</h3>
+          <p className="text-muted-foreground mb-4">
+            You need to create or join a team to view and manage support tickets.
+          </p>
+          <Link href="/dashboard/teams">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="mr-2 h-4 w-4" />
+              Go to Teams
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   // Calculate ticket statistics

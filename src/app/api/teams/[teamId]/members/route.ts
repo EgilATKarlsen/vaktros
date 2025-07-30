@@ -1,4 +1,4 @@
-import { stackServerApp } from "@/stack";
+import { getAuthenticatedUser } from "@/lib/auth-utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -8,8 +8,9 @@ export async function GET(
   try {
     const { teamId } = await params;
     
-    // Get the authenticated user
-    const user = await stackServerApp.getUser();
+    // Get the authenticated user - handle redirect errors gracefully
+    const user = await getAuthenticatedUser();
+    
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },

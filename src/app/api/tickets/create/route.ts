@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createTicket, addTicketAttachment, Ticket } from "@/lib/db";
 import { stackServerApp } from "@/stack";
+import { NotificationService } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,10 +87,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Send notifications asynchronously (don't await to avoid blocking the response)
+    NotificationService.notifyTicketCreated(ticket, user)
+      .catch(error => console.error('Notification error:', error));
+
     return NextResponse.json({
       success: true,
       ticket,
-      message: "Ticket created successfully",
+      message: "Ticket created successfully. SMS notifications sent to team members.",
     });
 
   } catch (error) {

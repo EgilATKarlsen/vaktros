@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import GlitchText from "@/components/glitch-text";
+import { SMSConsentStep } from "@/components/sms-consent-step";
 import { 
   Building, 
   Users, 
@@ -27,12 +28,19 @@ interface OnboardingFlowProps {
   userEmail: string | null;
 }
 
-type OnboardingStep = "welcome" | "team-assignment" | "completing" | "completed";
+type OnboardingStep = "welcome" | "team-assignment" | "sms-consent" | "completing" | "completed";
 
 export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("welcome");
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [smsSettings, setSmsSettings] = useState<{
+    phoneNumber: string | null;
+    consentGiven: boolean;
+  }>({
+    phoneNumber: null,
+    consentGiven: false
+  });
   const router = useRouter();
   const user = useUser(); // Use the Stack Auth hook for user operations
   const userTeams = user?.useTeams() || []; // Get user's teams at component level
@@ -53,32 +61,61 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
         if (existingTeam) {
           // Team already exists and user is already a member
           console.log("User is already part of the team:", existingTeam.displayName);
-          setCurrentStep("completing");
         } else {
           // Create new team if it doesn't exist
           await user.createTeam({
             displayName: suggestedTeamName,
           });
-          setCurrentStep("completing");
         }
       } else if (action === "create" && suggestedTeamName && user) {
         // Create the team
         await user.createTeam({
           displayName: suggestedTeamName,
         });
-        setCurrentStep("completing");
-      } else {
-        // Skip team assignment
-        setCurrentStep("completing");
       }
 
-      // Mark user as onboarded
+      // Update metadata for team assignment completion
+      if (user) {
+        await user.update({
+          clientMetadata: {
+            ...user.clientMetadata,
+            teamAssignmentCompleted: true,
+          }
+        });
+      }
+
+      // Move to SMS consent step
+      setCurrentStep("sms-consent");
+
+    } catch (err: unknown) {
+      console.error("Team assignment error:", err);
+      setError(err instanceof Error ? err.message : "An error occurred during team assignment");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleSMSConsentComplete = (phoneNumber: string | null, consentGiven: boolean) => {
+    setSmsSettings({ phoneNumber, consentGiven });
+    setCurrentStep("completing");
+    completeOnboarding(phoneNumber, consentGiven);
+  };
+
+  const completeOnboarding = async (phoneNumber: string | null, consentGiven: boolean) => {
+    setIsProcessing(true);
+    
+    try {
+      // Mark user as fully onboarded
       if (user) {
         await user.update({
           clientMetadata: {
             ...user.clientMetadata,
             onboarded: true,
             teamAssignmentCompleted: true,
+            smsNotificationsEnabled: consentGiven,
+            phoneNumber: phoneNumber,
+            smsConsentGiven: consentGiven,
+            smsConsentDate: consentGiven ? new Date().toISOString() : null,
           }
         });
       }
@@ -91,8 +128,8 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
       }, 2000);
 
     } catch (err: unknown) {
-      console.error("Onboarding error:", err);
-      setError(err instanceof Error ? err.message : "An error occurred during onboarding");
+      console.error("Onboarding completion error:", err);
+      setError(err instanceof Error ? err.message : "An error occurred during onboarding completion");
     } finally {
       setIsProcessing(false);
     }
@@ -189,7 +226,14 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
                       disabled={isProcessing}
                       className="bg-red-600 hover:bg-red-700"
                     >
-                      Continue to Dashboard
+                      {isProcessing ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        'Continue'
+                      )}
                     </Button>
                   </div>
                 ) : (
@@ -208,6 +252,7 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
                           </div>
                         </div>
                       </div>
+                      {isProcessing && <Loader2 className="ml-auto h-4 w-4 animate-spin" />}
                     </Button>
 
                     <Button
@@ -225,6 +270,7 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
                           </div>
                         </div>
                       </div>
+                      {isProcessing && <Loader2 className="ml-auto h-4 w-4 animate-spin" />}
                     </Button>
                   </>
                 )}
@@ -245,7 +291,14 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
                 disabled={isProcessing}
                 className="bg-red-600 hover:bg-red-700"
               >
-                Continue to Dashboard
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Continue to Next Step'
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -266,6 +319,10 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
     );
   };
 
+  const renderSMSConsentStep = () => (
+    <SMSConsentStep onComplete={handleSMSConsentComplete} />
+  );
+
   const renderCompletingStep = () => (
     <Card className="border-blue-500/20">
       <CardContent className="text-center py-12">
@@ -274,6 +331,16 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
         <p className="text-muted-foreground">
           Please wait while we configure your surveillance network access
         </p>
+        {smsSettings.phoneNumber && (
+          <p className="text-sm text-green-600 mt-2">
+            ✓ SMS notifications enabled for {smsSettings.phoneNumber}
+          </p>
+        )}
+        {smsSettings.consentGiven === false && (
+          <p className="text-sm text-gray-600 mt-2">
+            ✓ SMS notifications disabled by choice
+          </p>
+        )}
       </CardContent>
     </Card>
   );
@@ -286,6 +353,16 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
         <p className="text-muted-foreground mb-4">
           Your account has been set up successfully
         </p>
+        {smsSettings.phoneNumber && smsSettings.consentGiven && (
+          <p className="text-sm text-green-600 mb-2">
+            ✓ SMS notifications enabled for {smsSettings.phoneNumber}
+          </p>
+        )}
+        {!smsSettings.consentGiven && (
+          <p className="text-sm text-gray-600 mb-2">
+            ✓ You can enable SMS notifications anytime in your profile
+          </p>
+        )}
         <Badge variant="secondary" className="bg-green-500/20 text-green-400">
           Redirecting to dashboard...
         </Badge>
@@ -309,6 +386,7 @@ export function OnboardingFlow({ user: userData, suggestedTeamName, userEmail }:
     <div className="space-y-6">
       {currentStep === "welcome" && renderWelcomeStep()}
       {currentStep === "team-assignment" && renderTeamAssignmentStep()}
+      {currentStep === "sms-consent" && renderSMSConsentStep()}
       {currentStep === "completing" && renderCompletingStep()}
       {currentStep === "completed" && renderCompletedStep()}
     </div>

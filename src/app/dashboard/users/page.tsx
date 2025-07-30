@@ -108,9 +108,9 @@ export default function UsersPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-green-500" />
+                  <Shield className="h-4 w-4 text-green-500 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">Your Role:</span>
                   <Badge 
                     variant={isAdmin ? 'default' : 'outline'} 
@@ -124,14 +124,14 @@ export default function UsersPage() {
                   </Badge>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Settings className="h-4 w-4 text-blue-500" />
+                  <Settings className="h-4 w-4 text-blue-500 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">Permissions:</span>
                   <Badge variant="secondary" className="bg-blue-500/20 text-blue-400 text-xs">
                     {isAdmin ? 'Full Access' : 'View Only'}
                   </Badge>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-yellow-500" />
+                <div className="flex items-center gap-2 sm:col-span-2 lg:col-span-1">
+                  <Users className="h-4 w-4 text-yellow-500 flex-shrink-0" />
                   <span className="text-sm text-muted-foreground">Team Status:</span>
                   <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs">
                     Active

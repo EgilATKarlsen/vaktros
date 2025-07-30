@@ -8,6 +8,16 @@ export const stackServerApp = new StackServerApp({
     afterSignUp: "/onboarding",
     afterSignIn: "/dashboard",
   },
+  // Only include these if environment variables are set
+  ...(process.env.NEXT_PUBLIC_STACK_PROJECT_ID && {
+    projectId: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
+  }),
+  ...(process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY && {
+    publishableClientKey: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
+  }),
+  ...(process.env.STACK_SECRET_SERVER_KEY && {
+    secretServerKey: process.env.STACK_SECRET_SERVER_KEY,
+  }),
 });
 
 // Domain to team mapping - add more domains as needed

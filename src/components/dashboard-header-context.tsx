@@ -29,7 +29,15 @@ export function DashboardHeaderProvider({ children }: { children: ReactNode }) {
 export function useDashboardHeader() {
   const context = useContext(DashboardHeaderContext);
   if (context === undefined) {
-    throw new Error('useDashboardHeader must be used within a DashboardHeaderProvider');
+    // Provide a fallback instead of throwing an error
+    console.warn('useDashboardHeader called outside of DashboardHeaderProvider, using fallback');
+    return {
+      title: 'Dashboard',
+      subheading: '',
+      setHeader: (title: string, subheading: string) => {
+        console.warn('setHeader called outside of DashboardHeaderProvider:', { title, subheading });
+      }
+    };
   }
   return context;
 } 

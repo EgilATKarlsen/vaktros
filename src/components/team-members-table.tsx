@@ -29,7 +29,9 @@ import {
   User,
   Loader2,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Mail,
+  Shield
 } from "lucide-react";
 
 interface TeamMember {
@@ -152,6 +154,81 @@ export function TeamMembersTable({ teamId, currentUserId, isCurrentUserAdmin }: 
     }
   };
 
+  // Mobile Card Component for individual members
+  const MemberCard = ({ member }: { member: TeamMember }) => (
+    <Card key={member.userId} className="border-white/10 bg-white/5">
+      <CardContent className="p-4">
+        <div className="space-y-3">
+          {/* Header with avatar and name */}
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                <User className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="font-medium text-sm truncate">
+                    {member.displayName || 'Unknown User'}
+                  </h3>
+                  {member.userId === currentUserId && (
+                    <Badge variant="secondary" className="text-xs">You</Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <Mail className="w-3 h-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground truncate">{member.email}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Role and Status */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Shield className="w-3 h-3 text-muted-foreground" />
+              <Badge 
+                variant={member.role === 'Admin' ? 'default' : 'outline'} 
+                className={`text-xs ${
+                  member.role === 'Admin' 
+                    ? 'bg-purple-500/20 text-purple-400 border-purple-500/20' 
+                    : ''
+                }`}
+              >
+                {member.role === 'Admin' && <Crown className="w-3 h-3 mr-1" />}
+                {member.role}
+              </Badge>
+            </div>
+            <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs">
+              Active
+            </Badge>
+          </div>
+
+          {/* Actions */}
+          {isCurrentUserAdmin && member.userId !== currentUserId && (
+            <div className="pt-2 border-t border-white/10">
+              <Button
+                onClick={() => openRemoveDialog(member)}
+                variant="ghost"
+                size="sm"
+                disabled={actionLoading === member.userId}
+                className="w-full h-8 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+              >
+                {actionLoading === member.userId ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <UserX className="w-4 h-4 mr-2" />
+                    Remove from Team
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -199,96 +276,109 @@ export function TeamMembersTable({ teamId, currentUserId, isCurrentUserAdmin }: 
         </Card>
       )}
 
-      <div className="rounded-md border border-white/10">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-white/10">
-              <TableHead>Member</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              {isCurrentUserAdmin && <TableHead className="text-right">Actions</TableHead>}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {members.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={isCurrentUserAdmin ? 5 : 4} className="text-center py-8">
-                  <div className="text-muted-foreground">
-                    <User className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p>No team members found</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : (
-              members.map((member) => (
-                <TableRow key={member.userId} className="border-white/10">
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                        <User className="w-4 h-4 text-blue-400" />
-                      </div>
-                      <div>
-                        <p className="font-medium">
-                          {member.displayName || 'Unknown User'}
-                          {member.userId === currentUserId && (
-                            <Badge variant="secondary" className="ml-2 text-xs">You</Badge>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm text-muted-foreground">{member.email}</span>
-                  </TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={member.role === 'Admin' ? 'default' : 'outline'} 
-                      className={`text-xs ${
-                        member.role === 'Admin' 
-                          ? 'bg-purple-500/20 text-purple-400 border-purple-500/20' 
-                          : ''
-                      }`}
-                    >
-                      {member.role === 'Admin' && <Crown className="w-3 h-3 mr-1" />}
-                      {member.role}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs">
-                      Active
-                    </Badge>
-                  </TableCell>
-                  {isCurrentUserAdmin && (
-                    <TableCell className="text-right">
-                      {member.userId !== currentUserId ? (
-                        <Button
-                          onClick={() => openRemoveDialog(member)}
-                          variant="ghost"
-                          size="sm"
-                          disabled={actionLoading === member.userId}
-                          className="h-8 px-3 text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                        >
-                          {actionLoading === member.userId ? (
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                          ) : (
-                            <>
-                              <UserX className="w-4 h-4 mr-1" />
-                              Remove
-                            </>
-                          )}
-                        </Button>
-                      ) : (
-                        <span className="text-xs text-muted-foreground">Current User</span>
-                      )}
-                    </TableCell>
-                  )}
+      {members.length === 0 ? (
+        <Card className="border-white/10">
+          <CardContent className="pt-6">
+            <div className="text-center py-8">
+              <User className="w-12 h-12 mx-auto mb-4 opacity-50 text-muted-foreground" />
+              <h3 className="font-medium mb-2">No team members found</h3>
+              <p className="text-sm text-muted-foreground">
+                This team doesn&apos;t have any members yet.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          {/* Mobile View - Cards */}
+          <div className="block md:hidden space-y-3">
+            {members.map((member) => (
+              <MemberCard key={member.userId} member={member} />
+            ))}
+          </div>
+
+          {/* Desktop View - Table */}
+          <div className="hidden md:block rounded-md border border-white/10">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-white/10">
+                  <TableHead>Member</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  {isCurrentUserAdmin && <TableHead className="text-right">Actions</TableHead>}
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              </TableHeader>
+              <TableBody>
+                {members.map((member) => (
+                  <TableRow key={member.userId} className="border-white/10">
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                          <User className="w-4 h-4 text-blue-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium">
+                            {member.displayName || 'Unknown User'}
+                            {member.userId === currentUserId && (
+                              <Badge variant="secondary" className="ml-2 text-xs">You</Badge>
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm text-muted-foreground">{member.email}</span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={member.role === 'Admin' ? 'default' : 'outline'} 
+                        className={`text-xs ${
+                          member.role === 'Admin' 
+                            ? 'bg-purple-500/20 text-purple-400 border-purple-500/20' 
+                            : ''
+                        }`}
+                      >
+                        {member.role === 'Admin' && <Crown className="w-3 h-3 mr-1" />}
+                        {member.role}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="secondary" className="bg-green-500/20 text-green-400 text-xs">
+                        Active
+                      </Badge>
+                    </TableCell>
+                    {isCurrentUserAdmin && (
+                      <TableCell className="text-right">
+                        {member.userId !== currentUserId ? (
+                          <Button
+                            onClick={() => openRemoveDialog(member)}
+                            variant="ghost"
+                            size="sm"
+                            disabled={actionLoading === member.userId}
+                            className="h-8 px-3 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                          >
+                            {actionLoading === member.userId ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <>
+                                <UserX className="w-4 h-4 mr-1" />
+                                Remove
+                              </>
+                            )}
+                          </Button>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">Current User</span>
+                        )}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </>
+      )}
 
       {/* Removal Confirmation Dialog */}
       <AlertDialog open={removeDialog.open} onOpenChange={(open) => 

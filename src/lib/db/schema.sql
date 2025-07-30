@@ -14,6 +14,35 @@ CREATE TABLE IF NOT EXISTS tickets (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Create user_profiles table for additional user information
+CREATE TABLE IF NOT EXISTS user_profiles (
+  id SERIAL PRIMARY KEY,
+  user_id VARCHAR(255) UNIQUE NOT NULL, -- Stack Auth user ID
+  phone_number VARCHAR(20),
+  sms_notifications_enabled BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create consent_records table for GDPR compliance
+CREATE TABLE IF NOT EXISTS consent_records (
+  id SERIAL PRIMARY KEY,
+  user_id VARCHAR(255) NOT NULL, -- Stack Auth user ID
+  consent_type VARCHAR(50) NOT NULL, -- 'sms_notifications', 'email_marketing', etc.
+  consent_given BOOLEAN NOT NULL,
+  consent_date TIMESTAMP NOT NULL DEFAULT NOW(),
+  consent_method VARCHAR(100) NOT NULL, -- 'onboarding_verification', 'profile_update', 'api_call'
+  ip_address INET, -- User's IP address when consent was given
+  user_agent TEXT, -- User's browser/device info
+  legal_basis VARCHAR(100), -- GDPR legal basis: 'consent', 'legitimate_interest', etc.
+  purpose TEXT, -- Clear description of what the consent is for
+  withdrawal_date TIMESTAMP, -- When consent was withdrawn (if applicable)
+  withdrawal_method VARCHAR(100), -- How consent was withdrawn
+  data_retention_period VARCHAR(100), -- How long we'll keep their data
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Create ticket_attachments table for file uploads
 CREATE TABLE IF NOT EXISTS ticket_attachments (
   id SERIAL PRIMARY KEY,
@@ -32,6 +61,10 @@ CREATE INDEX IF NOT EXISTS idx_tickets_status ON tickets(status);
 CREATE INDEX IF NOT EXISTS idx_tickets_severity ON tickets(severity);
 CREATE INDEX IF NOT EXISTS idx_tickets_created_at ON tickets(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_ticket_attachments_ticket_id ON ticket_attachments(ticket_id);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id ON user_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_consent_records_user_id ON consent_records(user_id);
+CREATE INDEX IF NOT EXISTS idx_consent_records_type ON consent_records(consent_type);
+CREATE INDEX IF NOT EXISTS idx_consent_records_date ON consent_records(consent_date DESC);
 
 -- Add trigger to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -43,4 +76,10 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_tickets_updated_at BEFORE UPDATE ON tickets
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_user_profiles_updated_at BEFORE UPDATE ON user_profiles
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_consent_records_updated_at BEFORE UPDATE ON consent_records
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
