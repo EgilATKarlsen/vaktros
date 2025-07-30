@@ -1,5 +1,6 @@
 import PWAWrapper from '@/components/pwa/pwa-wrapper'
 import DownloadGuide from '@/components/pwa/download-guide'
+import Link from 'next/link'
 
 export default function PWADemoPage() {
   return (
@@ -89,12 +90,12 @@ export default function PWADemoPage() {
         </div>
 
         <div className="text-center">
-          <a 
+          <Link 
             href="/" 
             className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
           >
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

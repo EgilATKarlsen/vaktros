@@ -98,7 +98,7 @@ export default function PushNotificationManager() {
             Push Notifications Not Supported
           </CardTitle>
           <CardDescription>
-            Your browser doesn't support push notifications.
+            Your browser doesn&apos;t support push notifications.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -120,7 +120,7 @@ export default function PushNotificationManager() {
         {subscription ? (
           <div className="space-y-4">
             <p className="text-sm text-green-600 dark:text-green-400">
-              ✓ You're subscribed to push notifications
+              ✓ You&apos;re subscribed to push notifications
             </p>
             <div className="space-y-2">
               <input

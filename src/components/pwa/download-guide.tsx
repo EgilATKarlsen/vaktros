@@ -13,7 +13,6 @@ import {
   Check, 
   ExternalLink,
   FileText,
-  QrCode,
   Bookmark
 } from 'lucide-react'
 
@@ -78,7 +77,6 @@ export default function DownloadGuide() {
   const createDesktopShortcut = () => {
     try {
       // Detect browser and create appropriate shortcut
-      const userAgent = navigator.userAgent.toLowerCase()
       const isWindows = navigator.platform.toLowerCase().includes('win')
       const isMac = navigator.platform.toLowerCase().includes('mac')
       
@@ -166,7 +164,7 @@ IconIndex=0`
           Download & Install Options
         </CardTitle>
         <CardDescription>
-          Multiple ways to install VAKTROS when the browser install button doesn't work
+          Multiple ways to install VAKTROS when the browser install button doesn&apos;t work
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -218,7 +216,7 @@ IconIndex=0`
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
                 <p>• Look for the <strong>install icon</strong> in the address bar (⊕ or 📱)</p>
-                <p>• Or: Three dots menu → "Install VAKTROS..."</p>
+                <p>• Or: Three dots menu → &quot;Install VAKTROS...&quot;</p>
                 <p>• Or: Settings → Apps → Install VAKTROS</p>
               </div>
             </div>
@@ -230,9 +228,9 @@ IconIndex=0`
                 <span className="font-medium">Safari Desktop</span>
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>• File menu → "Add to Dock"</p>
-                <p>• Or: Bookmarks → "Add Bookmark" → Save to Favorites</p>
-                <p>• Or: Share button → "Add to Reading List"</p>
+                <p>• File menu → &quot;Add to Dock&quot;</p>
+                <p>• Or: Bookmarks → &quot;Add Bookmark&quot; → Save to Favorites</p>
+                <p>• Or: Share button → &quot;Add to Reading List&quot;</p>
               </div>
             </div>
 
@@ -244,8 +242,8 @@ IconIndex=0`
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
                 <p>• Tap <strong>Share button</strong> (⬆️) at bottom</p>
-                <p>• Scroll down → Tap <strong>"Add to Home Screen"</strong></p>
-                <p>• Tap <strong>"Add"</strong> to confirm</p>
+                <p>• Scroll down → Tap <strong>&quot;Add to Home Screen&quot;</strong></p>
+                <p>• Tap <strong>&quot;Add&quot;</strong> to confirm</p>
               </div>
             </div>
 
@@ -256,8 +254,8 @@ IconIndex=0`
                 <span className="font-medium">Android Chrome</span>
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>• Three dots menu → <strong>"Add to Home screen"</strong></p>
-                <p>• Or: Three dots menu → <strong>"Install app"</strong></p>
+                <p>• Three dots menu → <strong>&quot;Add to Home screen&quot;</strong></p>
+                <p>• Or: Three dots menu → <strong>&quot;Install app&quot;</strong></p>
                 <p>• Confirm installation when prompted</p>
               </div>
             </div>
@@ -269,7 +267,7 @@ IconIndex=0`
                 <span className="font-medium">Other Browsers</span>
               </div>
               <div className="text-sm text-muted-foreground space-y-1">
-                <p>• Look for "Install", "Add to Desktop", or "Create Shortcut"</p>
+                <p>• Look for &quot;Install&quot;, &quot;Add to Desktop&quot;, or &quot;Create Shortcut&quot;</p>
                 <p>• Check browser menu or address bar for install options</p>
                 <p>• Bookmark the page and pin to favorites/toolbar</p>
               </div>
