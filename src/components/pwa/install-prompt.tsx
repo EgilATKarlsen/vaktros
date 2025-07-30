@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Download, X, Smartphone, Share, Monitor, Chrome, Globe, Copy, Check } from 'lucide-react'
 
+interface WindowWithMSStream extends Window {
+  MSStream?: any;
+}
+
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[]
   readonly userChoice: Promise<{
@@ -30,7 +34,7 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
 
   useEffect(() => {
     setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown).MSStream
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as WindowWithMSStream).MSStream
     )
 
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
