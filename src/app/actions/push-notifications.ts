@@ -8,8 +8,16 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY!
 )
 
+interface SubscriptionObject {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}
+
 // Store subscription as a plain object instead of PushSubscription
-let subscription: any = null
+let subscription: SubscriptionObject | null = null
 
 export async function subscribeUser(sub: {
   endpoint: string;
@@ -19,8 +27,6 @@ export async function subscribeUser(sub: {
   };
 }) {
   subscription = sub
-  // In a production environment, you would want to store the subscription in a database
-  // For example: await db.subscriptions.create({ data: sub })
   console.log('User subscribed to push notifications')
   return { success: true }
 }
