@@ -13,7 +13,6 @@ import {
   Check, 
   ExternalLink,
   FileText,
-  QrCode,
   Bookmark
 } from 'lucide-react'
 
@@ -78,7 +77,6 @@ export default function DownloadGuide() {
   const createDesktopShortcut = () => {
     try {
       // Detect browser and create appropriate shortcut
-      const userAgent = navigator.userAgent.toLowerCase()
       const isWindows = navigator.platform.toLowerCase().includes('win')
       const isMac = navigator.platform.toLowerCase().includes('mac')
       
@@ -166,7 +164,7 @@ IconIndex=0`
           Download & Install Options
         </CardTitle>
         <CardDescription>
-          Multiple ways to install VAKTROS when the browser install button doesn't work
+          Multiple ways to install VAKTROS when the browser install button doesn&apos;t work
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

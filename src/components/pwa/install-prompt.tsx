@@ -30,7 +30,7 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
 
   useEffect(() => {
     setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown).MSStream
     )
 
     setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
@@ -128,7 +128,7 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
             ✅ VAKTROS is Installed!
           </CardTitle>
           <CardDescription>
-            You're already running VAKTROS as an installed PWA app.
+            You&apos;re already running VAKTROS as an installed PWA app.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -168,14 +168,14 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
               <div className="flex items-start gap-3">
                 <Download className="w-4 h-4 mt-0.5 text-blue-500" />
                 <div>
-                  <p className="font-medium">2. Tap "Add to Home Screen"</p>
+                  <p className="font-medium">2. Tap &quot;Add to Home Screen&quot;</p>
                   <p className="text-muted-foreground">Scroll down to find this option</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <Smartphone className="w-4 h-4 mt-0.5 text-blue-500" />
                 <div>
-                  <p className="font-medium">3. Tap "Add" to confirm</p>
+                  <p className="font-medium">3. Tap &quot;Add&quot; to confirm</p>
                   <p className="text-muted-foreground">VAKTROS will appear on your home screen</p>
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
               <div className="space-y-3">
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
                   <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                    💡 <strong>No automatic install available.</strong> Use the manual options below or check your browser's menu for install options.
+                    💡 <strong>No automatic install available.</strong> Use the manual options below or check your browser&apos;s menu for install options.
                   </p>
                 </div>
                 <Button 
@@ -270,21 +270,21 @@ export default function InstallPrompt({ forceShow = false }: InstallPromptProps)
                     <Chrome className="w-4 h-4 mt-0.5 text-blue-500" />
                     <div>
                       <p className="font-medium">Chrome/Edge Desktop</p>
-                      <p className="text-muted-foreground">Look for the install icon in the address bar, or use the three-dot menu → "Install VAKTROS"</p>
+                      <p className="text-muted-foreground">Look for the install icon in the address bar, or use the three-dot menu → &quot;Install VAKTROS&quot;</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Globe className="w-4 h-4 mt-0.5 text-blue-500" />
                     <div>
                       <p className="font-medium">Safari Desktop</p>
-                      <p className="text-muted-foreground">File menu → "Add to Dock" or bookmark and pin to favorites</p>
+                      <p className="text-muted-foreground">File menu → &quot;Add to Dock&quot; or bookmark and pin to favorites</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Monitor className="w-4 h-4 mt-0.5 text-blue-500" />
                     <div>
                       <p className="font-medium">Other Browsers</p>
-                      <p className="text-muted-foreground">Check your browser's menu for "Install", "Add to Desktop", or "Create Shortcut" options</p>
+                      <p className="text-muted-foreground">Check your browser&apos;s menu for &quot;Install&quot;, &quot;Add to Desktop&quot;, or &quot;Create Shortcut&quot; options</p>
                     </div>
                   </div>
                 </div>
