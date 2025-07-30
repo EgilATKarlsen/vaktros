@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Download, X, Smartphone, Share, Monitor, Chrome, Globe, Copy, Check } from 'lucide-react'
 
 interface WindowWithMSStream extends Window {
-  MSStream?: any;
+  MSStream?: unknown;
 }
 
 interface BeforeInstallPromptEvent extends Event {
