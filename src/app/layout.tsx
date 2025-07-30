@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "../stack";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -31,6 +31,39 @@ export const metadata: Metadata = {
     "CCTV Data Collection",
     "Security AI Solutions"
   ],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "VAKTROS",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "VAKTROS",
+    title: "VAKTROS",
+    description: "AI-Powered Surveillance For The Modern World",
+  },
+  twitter: {
+    card: "summary",
+    title: "VAKTROS",
+    description: "AI-Powered Surveillance For The Modern World",
+  },
+  icons: {
+    icon: [
+      { url: '/vaktros.svg', type: 'image/svg+xml' }, // SVG favicon for website
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' }, // Fallback PNG
+    ],
+    apple: [
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' }, // PWA icon for Apple devices
+    ],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0070f3",
 };
 
 export default function RootLayout({
@@ -40,6 +73,34 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="VAKTROS" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-TileColor" content="#0070f3" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="msapplication-TileImage" content="/icon-256.png" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js', {
+                    scope: '/',
+                    updateViaCache: 'none'
+                  }).then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                  }).catch(function(error) {
+                    console.log('ServiceWorker registration failed: ', error);
+                  });
+                });
+              }
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       ><StackProvider app={stackServerApp}><StackTheme>
