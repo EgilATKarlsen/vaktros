@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { stackServerApp } from '@/stack';
 import { getConsentHistory } from '@/lib/db';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     // Verify user authentication
     const user = await stackServerApp.getUser();

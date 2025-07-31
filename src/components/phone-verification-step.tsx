@@ -136,7 +136,7 @@ export function PhoneVerificationStep({ onVerificationComplete, onSkip }: PhoneV
           Verify Your Phone Number
         </h2>
         <p className="text-muted-foreground text-lg">
-          We'll send you SMS notifications for important ticket updates
+          We&apos;ll send you SMS notifications for important ticket updates
         </p>
       </div>
 
@@ -312,7 +312,7 @@ export function PhoneVerificationStep({ onVerificationComplete, onSkip }: PhoneV
           Your phone number has been successfully verified
         </p>
         <p className="text-sm text-green-600">
-          You'll receive SMS notifications for ticket updates
+          You&apos;ll receive SMS notifications for ticket updates
         </p>
       </CardContent>
     </Card>

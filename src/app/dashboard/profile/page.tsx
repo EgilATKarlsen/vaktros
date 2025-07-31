@@ -121,7 +121,7 @@ export default function ProfilePage() {
             Notification Types
           </CardTitle>
           <CardDescription>
-            What notifications you'll receive when SMS is enabled
+            What notifications you&apos;ll receive when SMS is enabled
           </CardDescription>
         </CardHeader>
         <CardContent>

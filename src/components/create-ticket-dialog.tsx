@@ -110,8 +110,8 @@ export function CreateTicketDialog({
       setFormData({
         title: "",
         description: "",
-        severity: "Medium",
-        category: "Technical",
+        severity: "Medium" as CreateTicketData['severity'],
+        category: "Technical" as CreateTicketData['category'],
       });
       setFiles([]);
 

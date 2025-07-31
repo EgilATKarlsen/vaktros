@@ -5,6 +5,7 @@ import type React from "react"
 import { useState, useEffect, type ReactNode } from "react"
 import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from 'next/image';
 
 export interface SlideData {
   id: string
@@ -89,10 +90,11 @@ export default function Slideshow({
 
   const imageContent = (
     <div className="relative aspect-video md:aspect-square bg-muted/30 dark:bg-gray-900">
-      <img
+      <Image
         src={currentSlideData.image || "/placeholder.svg"}
-        alt={currentSlideData.title}
-        className="w-full h-full object-cover"
+        alt={currentSlideData.title || 'Slideshow image'}
+        fill
+        className="object-cover"
       />
       {imageOverlay && imageOverlay(currentSlideData, currentSlide)}
     </div>

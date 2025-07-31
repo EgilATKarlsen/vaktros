@@ -9,6 +9,11 @@ const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 // Initialize Twilio client
 const client = new Twilio(accountSid, authToken);
 
+interface TwilioError extends Error {
+  code?: number;
+  message: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     // Verify environment variables
@@ -56,13 +61,14 @@ export async function POST(req: NextRequest) {
         sid: message.sid 
       });
 
-    } catch (twilioError: any) {
-      console.error('Twilio error:', twilioError);
+    } catch (twilioError: unknown) {
+      const error = twilioError as TwilioError;
+      console.error('Twilio error:', error);
       
       // Handle specific Twilio errors
       let errorMessage = 'Failed to send SMS';
-      if (twilioError.code) {
-        switch (twilioError.code) {
+      if (error.code) {
+        switch (error.code) {
           case 21211:
             errorMessage = 'Invalid phone number';
             break;
@@ -73,7 +79,7 @@ export async function POST(req: NextRequest) {
             errorMessage = 'SMS to this number is not allowed';
             break;
           default:
-            errorMessage = `SMS service error: ${twilioError.message}`;
+            errorMessage = `SMS service error: ${error.message}`;
         }
       }
 

@@ -137,7 +137,7 @@ export function CreateTicketForm({
 
   const getFileIcon = (file: File) => {
     if (file.type.startsWith('image/')) {
-      return <Image className="w-4 h-4" />;
+      return <Image className="w-4 h-4"/>;
     }
     return <FileText className="w-4 h-4" />;
   };

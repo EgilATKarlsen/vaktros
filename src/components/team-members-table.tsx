@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@stackframe/stack";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -68,13 +68,7 @@ export function TeamMembersTable({ teamId, currentUserId, isCurrentUserAdmin }: 
   const userTeams = user?.useTeams() || [];
   const currentTeam = userTeams.find(team => team.id === teamId);
 
-  useEffect(() => {
-    if (currentTeam) {
-      fetchTeamMembers();
-    }
-  }, [currentTeam, teamId]);
-
-  const fetchTeamMembers = async () => {
+  const fetchTeamMembers = useCallback(async () => {
     if (!currentTeam) return;
 
     try {
@@ -106,7 +100,13 @@ export function TeamMembersTable({ teamId, currentUserId, isCurrentUserAdmin }: 
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentTeam, teamId]);
+
+  useEffect(() => {
+    if (currentTeam) {
+      fetchTeamMembers();
+    }
+  }, [currentTeam, teamId, fetchTeamMembers]);
 
   const handleRemoveMember = async (member: TeamMember) => {
     if (!isCurrentUserAdmin || !currentTeam) return;

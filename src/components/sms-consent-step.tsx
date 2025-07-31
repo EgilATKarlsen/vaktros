@@ -8,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
-  Loader2, 
   Phone, 
   MessageSquare, 
   CheckCircle, 
@@ -162,14 +161,14 @@ export function SMSConsentStep({ onComplete }: SMSConsentStepProps) {
             SMS Notifications
           </CardTitle>
           <CardDescription>
-            Choose whether you'd like to receive text message notifications
+            Choose whether you&apos;d like to receive text message notifications
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              <strong>What you'll receive:</strong> Notifications when support tickets are created, updated, or resolved. 
+              <strong>What you&apos;ll receive:</strong> Notifications when support tickets are created, updated, or resolved. 
               You can change these preferences anytime in your profile settings.
             </AlertDescription>
           </Alert>
@@ -236,7 +235,7 @@ export function SMSConsentStep({ onComplete }: SMSConsentStepProps) {
           Enter Your Phone Number
         </h2>
         <p className="text-muted-foreground text-lg">
-          We'll verify your number to ensure you receive notifications
+          We&apos;ll verify your number to ensure you receive notifications
         </p>
       </div>
 
@@ -390,7 +389,7 @@ export function SMSConsentStep({ onComplete }: SMSConsentStepProps) {
           Your phone number has been verified successfully
         </p>
         <p className="text-sm text-green-600">
-          You'll receive notifications at {phoneNumber} for ticket updates
+          You&apos;ll receive notifications at {phoneNumber} for ticket updates
         </p>
       </CardContent>
     </Card>
@@ -405,7 +404,7 @@ export function SMSConsentStep({ onComplete }: SMSConsentStepProps) {
           You can enable SMS notifications anytime in your profile settings
         </p>
         <p className="text-sm text-gray-600">
-          You'll still receive email notifications for important updates
+          You&apos;ll still receive email notifications for important updates
         </p>
       </CardContent>
     </Card>

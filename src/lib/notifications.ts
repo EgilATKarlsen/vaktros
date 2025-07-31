@@ -20,8 +20,8 @@ export class NotificationService {
       }
 
       // Get the team through the user's teams
-      const userTeams = await currentUser.listTeams();
-      const team = userTeams.find(t => t.id === teamId);
+      const userTeams = await (currentUser as unknown as { listTeams(): Promise<Array<{ id: string; listUsers(): Promise<Array<{ id: string; displayName?: string }>> }>> }).listTeams();
+      const team = userTeams.find((t: { id: string; listUsers(): Promise<Array<{ id: string; displayName?: string }>> }) => t.id === teamId);
       
       if (!team) {
         console.log('Team not found in user teams:', teamId);
@@ -73,8 +73,8 @@ export class NotificationService {
   static async getTicketCreatorRecipient(creatorId: string): Promise<NotificationRecipient | null> {
     try {
       // Get creator user from Stack Auth using the server app
-      const creator = await stackServerApp.getUser({ userId: creatorId });
-      if (!creator) {
+      const creator = await stackServerApp.getUser();
+      if (!creator || creator.id !== creatorId) {
         console.log('Ticket creator not found:', creatorId);
         return null;
       }
@@ -224,7 +224,7 @@ View ticket: ${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/dashboard/ti
     }
   }
 
-  static async notifyTicketUpdated(ticket: Ticket, updateType: string, updateDescription: string, updatedBy: string, user?: User): Promise<void> {
+  static async notifyTicketUpdated(ticket: Ticket, updateType: string, updateDescription: string, updatedBy: string): Promise<void> {
     try {
       // Only notify the ticket creator for general updates (not team members)
       const creatorRecipient = await this.getTicketCreatorRecipient(ticket.creator_id);
@@ -251,7 +251,7 @@ View ticket: ${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/dashboard/ti
     }
   }
 
-  static async notifyTicketCreatorOnly(ticket: Ticket, message: string, user?: User): Promise<void> {
+  static async notifyTicketCreatorOnly(ticket: Ticket, message: string): Promise<void> {
     try {
       // Utility function to send custom messages to ticket creator only
       const creatorRecipient = await this.getTicketCreatorRecipient(ticket.creator_id);

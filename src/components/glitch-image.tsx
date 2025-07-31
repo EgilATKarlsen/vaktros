@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 
 interface GlitchImageProps extends ImageProps {
-  glitchIntensity?: number // 0-1
+  glitchIntensity?: number; // 0-1
+  alt: string; // Make alt prop required
 }
 
-export default function GlitchImage({ className, ...props }: GlitchImageProps) {
+export default function GlitchImage({ className, alt, ...props }: GlitchImageProps) {
   const [isGlitching, setIsGlitching] = useState(false)
   const { theme } = useTheme()
   
@@ -35,7 +36,7 @@ export default function GlitchImage({ className, ...props }: GlitchImageProps) {
 
   return (
     <div className="relative overflow-hidden">
-      <Image {...props} className={cn(isGlitching && "animate-glitch-image", className)} />
+      <Image {...props} alt={alt} className={cn(isGlitching && "animate-glitch-image", className)} />
 
       {isGlitching && !isLightMode && (
         <>

@@ -526,7 +526,7 @@ export default function CctvBackground() {
       window.removeEventListener("resize", resize)
       window.removeEventListener("resize", initCameras)
     }
-  }, [])
+  }, [isLightMode])
 
   return <canvas ref={canvasRef} className="w-full h-full" />
 }

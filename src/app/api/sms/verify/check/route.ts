@@ -10,6 +10,11 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 // Initialize Twilio client
 const client = new Twilio(accountSid, authToken);
 
+interface TwilioError extends Error {
+  code?: number;
+  message: string;
+}
+
 export async function POST(req: NextRequest) {
   try {
     // Verify user authentication
@@ -94,7 +99,6 @@ export async function POST(req: NextRequest) {
           // Get client IP and User-Agent for GDPR compliance
           const clientIP = req.headers.get('x-forwarded-for') || 
                           req.headers.get('x-real-ip') || 
-                          req.ip || 
                           'unknown';
           const userAgent = req.headers.get('user-agent') || 'unknown';
 
@@ -149,13 +153,14 @@ export async function POST(req: NextRequest) {
         );
       }
 
-    } catch (twilioError: any) {
-      console.error('Twilio verification check error:', twilioError);
+    } catch (twilioError: unknown) {
+      const error = twilioError as TwilioError;
+      console.error('Twilio verification check error:', error);
       
       // Handle specific Twilio errors
       let errorMessage = 'Failed to verify code';
-      if (twilioError.code) {
-        switch (twilioError.code) {
+      if (error.code) {
+        switch (error.code) {
           case 20404:
             errorMessage = 'Verification code expired or not found';
             break;
@@ -166,7 +171,7 @@ export async function POST(req: NextRequest) {
             errorMessage = 'Maximum verification attempts exceeded';
             break;
           default:
-            errorMessage = `Verification error: ${twilioError.message}`;
+            errorMessage = `Verification error: ${error.message}`;
         }
       }
 

@@ -64,8 +64,7 @@ export async function POST(
         ticket,
         updateType,
         updateDescription || '',
-        user.displayName || 'Team Member',
-        user
+        user.displayName || 'Team Member'
       ).catch(error => console.error('Notification error:', error));
     }
 

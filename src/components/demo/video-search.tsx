@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, Calendar, Clock, Camera, Filter } from "lucide-react"
+import Image from 'next/image';
 
 interface SearchResult {
   id: string
@@ -177,9 +178,11 @@ export default function VideoSearch() {
                     className="flex gap-3 p-3 bg-black/30 rounded-lg border border-white/5 hover:border-white/10 transition-colors cursor-pointer"
                   >
                     <div className="w-20 h-12 bg-gray-700 rounded overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={result.thumbnail || "/placeholder.svg"}
                         alt="Video thumbnail"
+                        width={80}
+                        height={48}
                         className="w-full h-full object-cover"
                       />
                     </div>

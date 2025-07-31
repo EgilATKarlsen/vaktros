@@ -110,7 +110,7 @@ export function TicketStatusSelector({ ticket, onStatusUpdate }: TicketStatusSel
         <div className="space-y-1 flex-1">
           <label className="text-sm font-medium">Update Status</label>
           <div className="flex gap-2">
-            <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+            <Select value={selectedStatus} onValueChange={(value) => setSelectedStatus(value as Ticket['status'])}>
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>

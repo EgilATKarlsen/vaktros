@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@stackframe/stack";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,30 +47,13 @@ export function UserProfileForm() {
   
   const [verificationCode, setVerificationCode] = useState('');
 
-  useEffect(() => {
-    if (user) {
-      fetchProfile();
-    }
-  }, [user]);
+  const fetchProfile = useCallback(async () => {
+    if (!user) return;
+    
+    setState('loading');
+    setError(null);
 
-  const startCountdown = () => {
-    setCountdown(60);
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const fetchProfile = async () => {
     try {
-      setState('loading');
-      setError(null);
-
       const response = await fetch('/api/user/profile');
       const data = await response.json();
 
@@ -106,6 +89,25 @@ export function UserProfileForm() {
       setError(err instanceof Error ? err.message : 'Failed to load profile');
       setState('no-consent');
     }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
+    }
+  }, [user, fetchProfile]);
+
+  const startCountdown = () => {
+    setCountdown(60);
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const handleGiveConsent = () => {
@@ -265,7 +267,7 @@ export function UserProfileForm() {
           setState('disabled');
           setSuccess('SMS notifications disabled');
         }
-      } catch (err) {
+      } catch {
         setError('Failed to update notification settings');
       } finally {
         setSaving(false);
@@ -289,7 +291,7 @@ export function UserProfileForm() {
         if (data.success) {
           setSuccess('SMS notifications enabled');
         }
-      } catch (err) {
+      } catch {
         setError('Failed to update notification settings');
       } finally {
         setSaving(false);
@@ -320,14 +322,14 @@ export function UserProfileForm() {
             SMS Notifications
           </CardTitle>
           <CardDescription>
-            Choose whether you'd like to receive text message notifications
+            Choose whether you&apos;d like to receive text message notifications
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              <strong>What you'll receive:</strong> Notifications when support tickets are created, updated, or resolved. 
+              <strong>What you&apos;ll receive:</strong> Notifications when support tickets are created, updated, or resolved. 
               You can change these preferences anytime.
             </AlertDescription>
           </Alert>
@@ -569,7 +571,7 @@ export function UserProfileForm() {
             SMS Notifications Active
           </CardTitle>
           <CardDescription>
-            You're receiving SMS notifications for ticket updates
+            You&apos;re receiving SMS notifications for ticket updates
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
