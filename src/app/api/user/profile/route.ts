@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserProfile, upsertUserProfile } from "@/lib/db";
-import { getAuthenticatedUser } from "@/lib/auth-utils";
+import { getCurrentUser } from "@/lib/server-auth-utils";
+import { getUserProfile, updateUserProfile } from "@/lib/db";
 
 export async function GET() {
   try {
     // Verify user authentication - handle redirect errors gracefully
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     
     if (!user) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // Verify user authentication
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upsert user profile
-    const profile = await upsertUserProfile(user.id, {
+    const profile = await updateUserProfile(user.id, {
       phone_number,
       sms_notifications_enabled
     });

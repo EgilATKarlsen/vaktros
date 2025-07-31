@@ -86,13 +86,40 @@ export default function RootLayout({
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
+                  // Add a timeout to prevent hanging
+                  const swTimeout = setTimeout(() => {
+                    console.log('Service Worker registration timed out');
+                  }, 5000);
+
                   navigator.serviceWorker.register('/sw.js', {
                     scope: '/',
                     updateViaCache: 'none'
                   }).then(function(registration) {
+                    clearTimeout(swTimeout);
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                      const newWorker = registration.installing;
+                      if (newWorker) {
+                        newWorker.addEventListener('statechange', () => {
+                          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New service worker available
+                            console.log('New service worker available');
+                          }
+                        });
+                      }
+                    });
                   }).catch(function(error) {
+                    clearTimeout(swTimeout);
                     console.log('ServiceWorker registration failed: ', error);
+                    
+                    // Fallback: try to unregister any existing service workers
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                      for(let registration of registrations) {
+                        registration.unregister();
+                      }
+                    });
                   });
                 });
               }

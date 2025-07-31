@@ -35,12 +35,14 @@ import {
 } from "@/components/ui/sidebar";
 import GlitchText from "@/components/glitch-text";
 import { useUser } from "@stackframe/stack";
+import { useLogout } from "@/lib/auth-utils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const user = useUser();
   const userTeams = user?.useTeams() || [];
   const currentTeam = userTeams[0] || null;
   const [isAdmin, setIsAdmin] = React.useState(false);
+  const logout = useLogout();
 
   React.useEffect(() => {
     async function checkAdminStatus() {
@@ -205,13 +207,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton 
-              asChild
+              onClick={logout}
               className="hover:bg-red-500/10 hover:text-red-400"
             >
-              <Link href="/handler/sign-out">
-                <LogOut className="h-4 w-4" />
-                <span>Sign Out</span>
-              </Link>
+              <LogOut className="h-4 w-4" />
+              <span>Sign Out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

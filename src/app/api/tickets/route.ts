@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
+import { getCurrentUser } from '@/lib/server-auth-utils';
 import { getTicketsByTeam } from '@/lib/db';
-import { getAuthenticatedUser } from '@/lib/auth-utils';
 
 export async function GET() {
   try {
-    // Get the user from the Stack auth - handle redirect errors gracefully
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

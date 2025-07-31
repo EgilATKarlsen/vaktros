@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from "@/lib/auth-utils";
+import { getCurrentUser } from "@/lib/server-auth-utils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -9,7 +9,7 @@ export async function GET(
     const { teamId } = await params;
     
     // Get the authenticated user - handle redirect errors gracefully
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     
     if (!user) {
       return NextResponse.json(

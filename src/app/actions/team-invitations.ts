@@ -1,6 +1,6 @@
 "use server";
 
-import { getAuthenticatedUser } from "@/lib/auth-utils";
+import { getCurrentUser } from "@/lib/server-auth-utils";
 import { stackServerApp } from "@/stack";
 
 export async function checkTeamInvitation(code: string) {
@@ -15,7 +15,7 @@ export async function checkTeamInvitation(code: string) {
     console.log("🔍 Checking invitation code:", code);
 
     // Get the current user and their access token
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     if (!user) {
       return {
         success: false,
@@ -164,7 +164,7 @@ export async function acceptTeamInvitation(code: string) {
     console.log("✅ Accepting invitation code:", code);
 
     // Get the current user and their access token
-    const user = await getAuthenticatedUser();
+    const user = await getCurrentUser();
     if (!user) {
       return {
         success: false,

@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
+import { useDashboardHeader } from "@/components/dashboard-header-context";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,10 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useDashboardHeader } from "./dashboard-header-context";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 import { User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@stackframe/stack";
+import { useEffect, useState } from "react";
+import { useLogout } from "@/lib/auth-utils";
 
 interface DashboardHeaderProps {
   userName?: string; // Make optional since we'll use client-side data
@@ -28,6 +29,7 @@ export function DashboardHeader({ userName: serverUserName }: DashboardHeaderPro
   const user = useUser();
   const [mounted, setMounted] = useState(false);
   const [forceRender, setForceRender] = useState(0);
+  const logout = useLogout();
 
   // Get display name from client-side user data, fallback to server prop
   const displayName = user?.displayName || user?.primaryEmail || serverUserName || 'User';
@@ -73,10 +75,7 @@ export function DashboardHeader({ userName: serverUserName }: DashboardHeaderPro
   };
 
   const handleSignOut = async () => {
-    if (user) {
-      await user.signOut();
-      router.push('/');
-    }
+    await logout();
   };
 
   // Get user initials for avatar fallback with better error handling
